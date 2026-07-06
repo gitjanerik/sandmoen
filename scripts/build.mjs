@@ -162,7 +162,7 @@ function forside() {
     + `
 <section class="hero">
   <div class="hero-bg" style="background-image:url('${L.asset('hero-poster.jpeg')}')"></div>
-  <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="${L.asset('hero-poster.jpeg')}">
+  <video class="hero-video" muted loop playsinline preload="metadata" poster="${L.asset('hero-poster.jpeg')}">
     <source src="${L.asset('hero-loop.mp4')}" type="video/mp4">
   </video>
   <div class="hero-veil"></div>
@@ -177,9 +177,14 @@ function forside() {
       </div>
     </div>
   </div>
-  <button class="hero-videobtn" type="button" aria-haspopup="dialog">
-    <span class="play">▶</span> Se video fra området
-  </button>
+  <div class="hero-controls">
+    <button class="hero-playpause" type="button" aria-label="Spill av bakgrunnsvideo">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg>
+    </button>
+    <button class="hero-videobtn" type="button" aria-haspopup="dialog">
+      <span class="play"><svg viewBox="0 0 24 24" width="9" height="9" fill="currentColor" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg></span> Se video fra området
+    </button>
+  </div>
 </section>
 
 <div class="videomodal" id="videomodal" hidden role="dialog" aria-label="Videopresentasjon">
