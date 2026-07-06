@@ -49,7 +49,7 @@ dist/             # byggeutdata (gitignored, deployes)
   0,3× slow-motion (ffmpeg `minterpolate`, bevegelseskompensert, ekte 30 fps);
   `hero-full.mp4` er full oppløsning i normal hastighet (med lyd) som
   «Se video»-knappen åpner; `hero-poster.jpeg` er fallback. H.264, `+faststart`.
-  Hero-videoen vises med lett `blur` + mørkere slør for lesbarhet.
+  Hero-videoen vises bak et mørkt slør (`.hero-veil`) for lesbarhet.
 
 Alle sider bruker relative stier, så samme bygg fungerer både på GitHub Pages
 (undermappe) og på rot-domenet (Domeneshop).
