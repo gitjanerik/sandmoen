@@ -1,4 +1,4 @@
-// Oversiktsside: filter, sortering og veksling kort/liste/kart. Data i window.__TOMTER__.
+// Oversiktsside: filter, sortering og veksling kort/liste. Data i window.__TOMTER__.
 (() => {
   const data = window.__TOMTER__ || [];
   const state = { status: 'alle', utsikt: 'alle', sort: 'nr', view: 'kort' };
@@ -6,7 +6,6 @@
   const $ = (id) => document.getElementById(id);
   const kortGrid = $('kort-grid');
   const listeBody = $('liste-body');
-  const kartPins = $('kart-pins');
   const countEl = $('count');
 
   const placeholder = () =>
@@ -33,15 +32,11 @@
       <td class="tomt">Tomt ${t.nr}</td>
       <td class="tabnum">${t.arealTxt}</td>
       <td>${t.utsikt}</td>
-      <td>${t.sol}</td>
       <td class="num price tabnum">${t.engangsTxt}</td>
       <td class="num tabnum">${t.festeTxt}</td>
       <td><span class="badge ${t.badgeCls}">${t.badgeT}</span></td>
       <td class="go"><a href="${t.href}">Se tomt →</a></td>
     </tr>`;
-
-  const pin = (t) => `<a class="kart-pin" href="${t.href}" title="Tomt ${t.nr}" style="left:${t.x}%;top:${t.y}%">
-      <span style="background:${t.badgeBg};color:${t.badgeFg}">${t.nr}</span></a>`;
 
   function filtered() {
     let r = data.slice();
@@ -58,7 +53,6 @@
     countEl.textContent = list.length;
     kortGrid.innerHTML = list.map(card).join('');
     listeBody.innerHTML = list.map(row).join('');
-    kartPins.innerHTML = list.map(pin).join('');
   }
 
   function setView(v) {
