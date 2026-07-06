@@ -1,0 +1,20 @@
+{
+  "sted": {
+    "navn": "Sandmoen",
+    "undertittel": "Hyttetomter ved Otersjøen · Lierne",
+    "felt": "Felt 4 · Lifjellet i Lierne"
+  },
+  "vilkaar": {
+    "engangsbelop": 300000,
+    "festeavgift": 6000
+  },
+  "kontakt": {
+    "navn": "Frode Skjelbred",
+    "telefon": "472 774 42",
+    "telefonLenke": "+4747277442",
+    "epost": "post@sandmoen.com"
+  },
+  "lenker": {
+    "reguleringsplan": "https://kommunekart.com"
+  }
+}

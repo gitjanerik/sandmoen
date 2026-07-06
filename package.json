@@ -1,0 +1,15 @@
+{
+  "name": "sandmoen",
+  "version": "1.0.0",
+  "description": "Statisk nettsted for hyttetomter ved Otersjøen, Sandmoen gård i Lierne.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
