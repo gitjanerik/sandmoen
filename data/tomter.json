@@ -1,17 +1,7 @@
 [
-  {"nr":1,"areal":0.9,"status":"Festet","utsikt":"Skog","sol":"Formiddag","terreng":"Lett kupert furumo, lunt og skjermet.","x":14,"y":62,"foto":false},
-  {"nr":2,"areal":1.0,"status":"Festet","utsikt":"Otersjøen","sol":"Kveldssol","terreng":"Slak helning mot vest, ned mot vannet.","x":24,"y":47,"foto":false},
-  {"nr":3,"areal":1.1,"status":"Ledig","utsikt":"Otersjøen","sol":"Kveldssol","terreng":"Åpen furumo med fri sikt til Otersjøen.","x":33,"y":37,"foto":false},
-  {"nr":5,"areal":1.0,"status":"Reservert","utsikt":"Fjell","sol":"Heldags","terreng":"Tørr morenerygg med utsyn mot Lifjellet.","x":41,"y":55,"foto":false},
-  {"nr":7,"areal":1.0,"status":"Ledig","utsikt":"Otersjøen","sol":"Kveldssol","terreng":"Ryddet tomt med sjøutsikt og kveldssol.","x":49,"y":41,"foto":true,"bilder":["tomt7-utsikt.jpeg","tomt7-1.jpeg","tomt7-2.jpeg","tomt7-3.jpeg","tomt7-4.jpeg"]},
-  {"nr":8,"areal":1.0,"status":"Ledig","utsikt":"Fjell","sol":"Heldags","terreng":"Lun plassering inntil Lifjellet.","x":55,"y":60,"foto":false},
-  {"nr":11,"areal":1.1,"status":"Festet","utsikt":"Skog","sol":"Formiddag","terreng":"Skjermet furuskog, god le for vind.","x":62,"y":35,"foto":false},
-  {"nr":12,"areal":1.2,"status":"Ledig","utsikt":"Fjell","sol":"Heldags","terreng":"Høytliggende tomt med vidt utsyn.","x":68,"y":52,"foto":false},
-  {"nr":14,"areal":1.0,"status":"Ledig","utsikt":"Otersjøen","sol":"Kveldssol","terreng":"Flat og byggeklar, kort vei til vannet.","x":74,"y":40,"foto":false},
-  {"nr":15,"areal":1.3,"status":"Reservert","utsikt":"Fjell","sol":"Heldags","terreng":"Stor tomt på rygg med panorama.","x":80,"y":57,"foto":false},
-  {"nr":17,"areal":1.2,"status":"Ledig","utsikt":"Otersjøen","sol":"Kveldssol","terreng":"Romslig tomt med sjøutsikt mot sør.","x":85,"y":44,"foto":false},
-  {"nr":18,"areal":1.3,"status":"Ledig","utsikt":"Fjell og vann","sol":"Heldags","terreng":"Den største tomta i feltet, fri utsikt.","x":90,"y":62,"foto":true},
-  {"nr":20,"areal":1.0,"status":"Festet","utsikt":"Skog","sol":"Formiddag","terreng":"Le for nordavind, tett furuskog.","x":30,"y":72,"foto":false},
-  {"nr":22,"areal":1.1,"status":"Ledig","utsikt":"Fjell","sol":"Heldags","terreng":"Solrik furumo midt i feltet.","x":58,"y":76,"foto":false},
-  {"nr":24,"areal":1.2,"status":"Reservert","utsikt":"Otersjøen","sol":"Kveldssol","terreng":"Endetomt mot myr og åpent vann.","x":78,"y":74,"foto":false}
+  {"nr":7,"areal":1.0,"status":"Ledig","utsikt":"Blåmuren","sol":"","terreng":"Kort vei til parkeringsplassen. Strøm er lagt fram til tomtegrense.","x":22,"y":58,"foto":true,"bilder":["tomt7-utsikt.jpeg","tomt7-1.jpeg","tomt7-2.jpeg","tomt7-3.jpeg","tomt7-4.jpeg"]},
+  {"nr":8,"areal":1.0,"status":"Ledig","utsikt":"","sol":"","terreng":"Mer informasjon kommer.","x":40,"y":40,"foto":true,"bilder":["tomt8-1.jpeg","tomt8-2.jpeg","tomt8-3.jpeg"]},
+  {"nr":14,"areal":1.0,"status":"Ledig","utsikt":"Nord og øst","sol":"","terreng":"Mer informasjon kommer.","x":55,"y":64,"foto":true,"bilder":["tomt14-1.jpeg","tomt14-2.jpeg","tomt14-3.jpeg","tomt14-4.jpeg","tomt14-5.jpeg","tomt14-6.jpeg"]},
+  {"nr":17,"areal":1.2,"status":"Ledig","utsikt":"","sol":"","terreng":"Mer informasjon kommer.","x":72,"y":44,"foto":false},
+  {"nr":18,"areal":1.3,"status":"Ledig","utsikt":"Nord og øst","sol":"","terreng":"Panoramautsikt mot nord og øst, mot tomt 20. Strøm er framført.","x":86,"y":60,"foto":true}
 ]

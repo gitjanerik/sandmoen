@@ -10,7 +10,7 @@ const DIST = join(ROOT, 'dist');
 
 const tomter = JSON.parse(readFileSync(join(ROOT, 'data/tomter.json'), 'utf8'));
 const config = JSON.parse(readFileSync(join(ROOT, 'data/config.json'), 'utf8'));
-const { vilkaar, kontakt, sted, lenker } = config;
+const { vilkaar, kontakt, sted, lenker, folgerMed, merknad } = config;
 
 /* ---------- Formatering (speiler prototypens hjelpere) ---------- */
 const kr = (n) => 'kr ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -24,6 +24,8 @@ function badge(status) {
   return { t: 'Bortfestet', cls: 'badge-festet', fg: '#6F6857', bg: '#ECE7DA' };
 }
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// Kort «areal · utsikt · sol» — hopper over tomme felt.
+const metaLine = (t) => [areaTxt(t.areal), t.utsikt, t.sol].filter(Boolean).map(esc).join(' · ');
 
 /* ---------- Relative stier per sidedybde ---------- */
 function links(depth) {
@@ -66,7 +68,7 @@ function tomtCard(t, L, { compact = false } = {}) {
         <span class="nr">Tomt ${t.nr}</span>
       </div>
       <div class="body">
-        <div class="meta">${areaTxt(t.areal)} · ${esc(t.utsikt)} · ${esc(t.sol)}</div>
+        <div class="meta">${metaLine(t)}</div>
         <div class="price tabnum">${engangsTxt}</div>
         <div class="feste tabnum">+ festeavgift ${festeTxt}</div>
         <div class="terreng">${esc(t.terreng)}</div>
@@ -152,7 +154,7 @@ function forside() {
     return areaTxt(Math.min(...a)).replace(' da', '') + '–' + areaTxt(Math.max(...a));
   };
   return head('Sandmoen — Hyttetomter ved Otersjøen i Lierne',
-    '15 hyttetomter til feste ved Otersjøen på Lifjellet i Lierne. Strøm og vei framført, engangsbeløp kr 300 000. Fiske, nasjonalpark og skiløyper.', L)
+    `${tomter.length} hyttetomter til feste ved Otersjøen på Lifjellet i Lierne. Strøm framført, engangsbeløp kr 300 000. Fiske, nasjonalpark og skiløyper.`, L)
     + header(L, 'forside')
     + `
 <section class="hero">
@@ -162,7 +164,7 @@ function forside() {
     <div class="hero-inner">
       <span class="pill-light">${esc(sted.felt)}</span>
       <h1>Din egen hyttetomt ved Otersjøen</h1>
-      <p>Femten ryddede tomter på fjellet, med strøm og vei framført. Fiske og bål om sommeren, skiløyper og nordlys om vinteren — fire mil fra svenskegrensen, midt i Blåfjella-Skjækerfjella og Lierne nasjonalparker.</p>
+      <p>${tomter.length} ryddede tomter på fjellet, med strøm framført. Fiske og bål om sommeren, skiløyper og nordlys om vinteren — fire mil fra svenskegrensen, midt i Blåfjella-Skjækerfjella og Lierne nasjonalparker.</p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="${L.oversikt}">Se de ledige tomtene →</a>
         <a class="btn btn-glass btn-lg" href="${L.oversikt}">Slik fester du tomt</a>
@@ -175,7 +177,7 @@ function forside() {
   <div class="wrap">
     <div><div class="stat-v">${ledige.length}</div><div class="stat-l">ledige tomter nå</div></div>
     <div><div class="stat-v tabnum">${engangsTxt}</div><div class="stat-l">engangsbeløp ved feste</div></div>
-    <div><div class="stat-v">Strøm &amp; vei</div><div class="stat-l">framført til feltet</div></div>
+    <div><div class="stat-v">Strøm</div><div class="stat-l">framført til feltet</div></div>
     <div><div class="stat-v">${arealSpenn()}</div><div class="stat-l">romslige tomter</div></div>
   </div>
 </section>
@@ -231,46 +233,57 @@ function oversikt() {
     };
   });
 
+  // Filtre og kartforklaring vises kun når dataene gjør dem meningsfulle.
+  const statuser = [...new Set(sorted.map((t) => t.status))];
+  const utsikter = [...new Set(sorted.map((t) => t.utsikt).filter(Boolean))];
+  const visStatus = statuser.length >= 2;
+  const visUtsikt = utsikter.length >= 2;
+
+  const statusField = visStatus ? `<div class="field">
+        <label for="f-status">Status</label>
+        <select id="f-status">
+          <option value="alle">Alle statuser</option>
+          ${statuser.map((s) => `<option value="${esc(s)}">${badge(s).t}</option>`).join('\n          ')}
+        </select>
+      </div>` : '';
+  const utsiktField = visUtsikt ? `<div class="field">
+        <label for="f-utsikt">Utsikt</label>
+        <select id="f-utsikt">
+          <option value="alle">All utsikt</option>
+          ${utsikter.map((u) => `<option value="${esc(u)}">${esc(u)}</option>`).join('\n          ')}
+        </select>
+      </div>` : '';
+  const sortField = `<div class="field">
+        <label for="f-sort">Sortering</label>
+        <select id="f-sort">
+          <option value="nr">Tomtenummer</option>
+          <option value="areal">Størst areal først</option>
+          ${visStatus ? '<option value="status">Status</option>' : ''}
+        </select>
+      </div>`;
+  const legendRows = statuser.map((s) => {
+    const b = badge(s);
+    const cls = s === 'Ledig' ? 'dot-ledig' : s === 'Reservert' ? 'dot-reservert' : 'dot-festet';
+    return `<div class="legend-row"><span class="dot ${cls}"></span><span class="lbl">${b.t}</span></div>`;
+  }).join('\n        ');
+
   return head('Hyttetomter til feste — Sandmoen',
-    'Se alle 15 hyttetomtene i Felt 4 på Lifjellet — status, areal, utsikt og festevilkår. Kort, liste og kart.', L)
+    `Se alle ${sorted.length} hyttetomtene i Felt 4 på Lifjellet — areal, utsikt og festevilkår. Kort, liste og kart.`, L)
     + header(L, 'oversikt')
     + `
 <section class="top-green">
   <div class="wrap">
     <span class="eyebrow">Felt 4 · Lifjellet</span>
     <h1>Hyttetomter til feste</h1>
-    <p>Femten tomter på Lifjellet festes bort. Strøm er framført og tomtene er ryddet. Engangsbeløp ${engangsTxt} og årlig festeavgift ${kr(vilkaar.festeavgift)} for samtlige tomter. Reguleringsplanen finner du i kartlaget til Lierne kommune.</p>
+    <p>${sorted.length} tomter på Lifjellet festes bort. ${esc(merknad)} Engangsbeløp ${engangsTxt} og årlig festeavgift ${kr(vilkaar.festeavgift)} for samtlige tomter. Reguleringsplanen finner du i kartlaget til Lierne kommune.</p>
   </div>
 </section>
 
 <div class="wrap" style="padding-top:26px;padding-bottom:80px">
   <div class="toolbar">
-    <div class="field">
-      <label for="f-status">Status</label>
-      <select id="f-status">
-        <option value="alle">Alle statuser</option>
-        <option value="Ledig">Ledig</option>
-        <option value="Reservert">Reservert</option>
-        <option value="Festet">Bortfestet</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="f-utsikt">Utsikt</label>
-      <select id="f-utsikt">
-        <option value="alle">All utsikt</option>
-        <option value="Otersjøen">Otersjøen</option>
-        <option value="Fjell">Mot fjellet</option>
-        <option value="Skog">Skog</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="f-sort">Sortering</label>
-      <select id="f-sort">
-        <option value="nr">Tomtenummer</option>
-        <option value="areal">Størst areal først</option>
-        <option value="status">Status</option>
-      </select>
-    </div>
+      ${statusField}
+      ${utsiktField}
+      ${sortField}
     <div class="toolbar-right">
       <span class="count"><b class="tabnum" id="count">${sorted.length}</b> tomter</span>
       <div class="viewtoggle" role="group" aria-label="Visning">
@@ -314,9 +327,7 @@ function oversikt() {
       </div>
       <div class="kart-legend">
         <h3>Forklaring</h3>
-        <div class="legend-row"><span class="dot dot-ledig"></span><span class="lbl">Ledig</span></div>
-        <div class="legend-row"><span class="dot dot-reservert"></span><span class="lbl">Reservert</span></div>
-        <div class="legend-row"><span class="dot dot-festet"></span><span class="lbl">Bortfestet</span></div>
+        ${legendRows}
         <p>Klikk på en tomt i kartet for å se detaljer, bilder og festevilkår.</p>
         <a href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Reguleringsplan hos Lierne kommune →</a>
       </div>
@@ -396,23 +407,18 @@ function detalj(t) {
   <div>
     <span class="eyebrow">${esc(sted.felt)}</span>
     <h1>Hyttetomt ${t.nr}</h1>
-    <p class="detalj-lead">${esc(t.terreng)} Tomta er ryddet og byggeklar, med strøm og vei framført helt fram. Festeavtalen gir deg en romslig tomt midt i et av Trøndelags fineste turområder, fire mil fra svenskegrensen.</p>
+    <p class="detalj-lead">${esc(t.terreng)} Festet gir deg en romslig tomt midt i et av Trøndelags fineste turområder. Strøm er framført til feltet — vann og vei er ikke opparbeidet.</p>
 
     <div class="facts">
       <div class="fact"><div class="k">Areal</div><div class="v tabnum">${areaTxt(t.areal)}</div></div>
-      <div class="fact"><div class="k">Utsikt</div><div class="v">${esc(t.utsikt)}</div></div>
-      <div class="fact"><div class="k">Solforhold</div><div class="v">${esc(t.sol)}</div></div>
+      <div class="fact"><div class="k">Utsikt</div><div class="v">${esc(t.utsikt) || 'Kommer'}</div></div>
+      <div class="fact"><div class="k">Solforhold</div><div class="v">${esc(t.sol) || 'Kommer'}</div></div>
       <div class="fact"><div class="k">Status</div><div class="v">${b.t}</div></div>
     </div>
 
     <h2>Dette følger med</h2>
     <div class="includes">
-      <div><span class="dot"></span>Strøm framført til tomtegrense</div>
-      <div><span class="dot"></span>Bilvei helt fram</div>
-      <div><span class="dot"></span>Ryddet og byggeklar</div>
-      <div><span class="dot"></span>Regulert i kommuneplanen</div>
-      <div><span class="dot"></span>Fiskevann i gangavstand</div>
-      <div><span class="dot"></span>Skiløyper og jaktterreng</div>
+      ${folgerMed.map((x) => `<div><span class="dot"></span>${esc(x)}</div>`).join('\n      ')}
     </div>
 
     <h2>Plassering i feltet</h2>
@@ -428,6 +434,7 @@ function detalj(t) {
     <div class="aside-row"><span>Årlig festeavgift</span><b class="tabnum">${festeTxt}</b></div>
     <div class="aside-row"><span>Areal</span><b class="tabnum">${areaTxt(t.areal)}</b></div>
     <div class="aside-row"><span>Status</span><span class="badge ${b.cls}">${b.t}</span></div>
+    <p class="aside-merknad">${esc(merknad)}</p>
     <a class="btn btn-primary btn-block" href="${L.kontakt}?tomt=${t.nr}">Meld interesse for tomt ${t.nr}</a>
     <a class="btn btn-sand btn-block" href="${L.kontakt}">Still et spørsmål</a>
     <p class="note">Uforpliktende. Vi tar kontakt innen kort tid.</p>
@@ -500,7 +507,7 @@ function kontaktside() {
     </div>
     <div class="info-card sand">
       <h3>Festevilkår kort</h3>
-      <p>Engangsbeløp ${engangsTxt} og årlig festeavgift ${kr(vilkaar.festeavgift)} per tomt. Strøm og vei er framført.</p>
+      <p>Engangsbeløp ${engangsTxt} og årlig festeavgift ${kr(vilkaar.festeavgift)} per tomt. ${esc(merknad)}</p>
     </div>
   </aside>
 </div>

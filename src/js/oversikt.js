@@ -12,16 +12,18 @@
   const placeholder = () =>
     '<svg viewBox="0 0 400 160" preserveAspectRatio="none"><path d="M0 104 L70 78 L140 100 L210 68 L280 96 L350 72 L400 100 L400 160 L0 160 Z" fill="rgba(255,255,255,.07)"/><path d="M0 126 L90 102 L170 122 L250 96 L330 122 L400 104 L400 160 L0 160 Z" fill="rgba(0,0,0,.16)"/></svg>';
 
-  const media = (t) => t.hasFoto
+  const photo = (t) => t.hasFoto
     ? `<div class="photo" style="background-image:url('${t.heroUrl}')"></div>`
     : placeholder();
 
+  const meta = (t) => [t.arealTxt, t.utsikt, t.sol].filter(Boolean).join(' · ');
+
   const card = (t) => `<a class="tomt-card" href="${t.href}">
-      <div class="media">${media(t)}<div class="shade"></div>
+      <div class="media">${photo(t)}<div class="shade"></div>
         <span class="badge ${t.badgeCls}">${t.badgeT}</span>
         <span class="nr">Tomt ${t.nr}</span></div>
       <div class="body">
-        <div class="meta">${t.arealTxt} · ${t.utsikt} · ${t.sol}</div>
+        <div class="meta">${meta(t)}</div>
         <div class="price tabnum">${t.engangsTxt}</div>
         <div class="feste tabnum">+ festeavgift ${t.festeTxt}</div>
         <div class="terreng">${t.terreng}</div>
@@ -67,9 +69,10 @@
     $('view-' + v).classList.add('is-active');
   }
 
-  $('f-status').addEventListener('change', (e) => { state.status = e.target.value; render(); });
-  $('f-utsikt').addEventListener('change', (e) => { state.utsikt = e.target.value; render(); });
-  $('f-sort').addEventListener('change', (e) => { state.sort = e.target.value; render(); });
+  const on = (id, fn) => { const el = $(id); if (el) el.addEventListener('change', fn); };
+  on('f-status', (e) => { state.status = e.target.value; render(); });
+  on('f-utsikt', (e) => { state.utsikt = e.target.value; render(); });
+  on('f-sort', (e) => { state.sort = e.target.value; render(); });
   document.querySelectorAll('.viewtoggle button').forEach((b) =>
     b.addEventListener('click', () => setView(b.dataset.view)));
 

@@ -8,6 +8,15 @@
     "engangsbelop": 300000,
     "festeavgift": 6000
   },
+  "merknad": "Strøm er framført til feltet. Det er ikke opparbeidet vann eller vei — tomtene festes som de er.",
+  "folgerMed": [
+    "Strøm framført til feltet",
+    "Tomtene er ryddet",
+    "Regulert for hyttebygging (Lierne kommune)",
+    "Fiske i Otersjøen i nærheten",
+    "Skiløyper og jaktterreng",
+    "Nær Blåfjella-Skjækerfjella og Lierne nasjonalparker"
+  ],
   "kontakt": {
     "navn": "Frode Skjelbred",
     "telefon": "472 774 42",

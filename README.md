@@ -36,7 +36,14 @@ dist/             # byggeutdata (gitignored, deployes)
 
 - **Tomtedata** (status, areal, utsikt, bilder …): rediger `data/tomter.json`, kjør `npm run build`.
 - **Priser / kontaktinfo**: rediger `data/config.json`.
-- **Nye bilder**: legg i `src/assets/`, referer filnavnet i `bilder`-lista på tomta i `tomter.json`.
+- **Nye bilder**: web-optimaliser råbilder først (auto-rotasjon, nedskalering, komprimering),
+  så refereres filnavnet i `bilder`-lista på tomta i `tomter.json`:
+
+  ```bash
+  npm install                                   # engangs: henter sharp (devDependency)
+  node scripts/optimize-images.mjs 14 ~/raabilder-tomt14
+  # → skriver src/assets/tomt14-1.jpeg, -2.jpeg … (sortert etter filnavn)
+  ```
 
 Alle sider bruker relative stier, så samme bygg fungerer både på GitHub Pages
 (undermappe) og på rot-domenet (Domeneshop).
