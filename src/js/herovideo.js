@@ -14,6 +14,10 @@
   hero.addEventListener('play', sync);
   hero.addEventListener('pause', sync);
   sync();
+
+  // Autospill (muted) for de fleste, men respekter «redusert bevegelse».
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) hero.play().catch(() => {});
 })();
 
 // Åpner full-oppløsnings videopresentasjon i en enkel modal (med lyd + kontroller).
