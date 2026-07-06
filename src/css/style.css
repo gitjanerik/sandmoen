@@ -323,41 +323,6 @@ main { flex: 1; }
 .table-wrap td.go { text-align: right; color: var(--accent); font-weight: 600; white-space: nowrap; }
 .table-wrap a { text-decoration: none; }
 
-/* ---- Kart ---- */
-.kart-layout { display: grid; grid-template-columns: 1fr 230px; gap: 20px; align-items: start; }
-.kart-box {
-  position: relative; height: 540px; border-radius: 15px; overflow: hidden;
-  border: 1px solid #d8d1bf;
-  background: radial-gradient(120% 90% at 50% 0%, #cfe0d2 0%, #a9c6ad 45%, #86ab8c 100%);
-}
-.kart-box > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.kart-pin {
-  position: absolute; transform: translate(-50%, -50%);
-  background: none; border: none; cursor: pointer; padding: 0; text-decoration: none;
-}
-.kart-pin span {
-  width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fff;
-  box-shadow: 0 3px 9px rgba(20,30,22,.28);
-  display: flex; align-items: center; justify-content: center;
-  font: 700 14px var(--font-ui); font-variant-numeric: tabular-nums;
-  transition: transform .14s;
-}
-.kart-pin:hover span { transform: scale(1.18); }
-.kart-note { position: absolute; bottom: 12px; right: 14px; font-size: 11.5px;
-  color: #3c5045; background: rgba(255,255,255,.7); padding: 5px 10px; border-radius: 7px; }
-.kart-legend { background: #fff; border: 1px solid var(--hairline); border-radius: 13px; padding: 18px 18px 20px; }
-.kart-legend h3 { font: 600 14px var(--font-ui); color: var(--ink-2); margin: 0 0 14px; }
-.legend-row { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
-.legend-row span.dot { width: 18px; height: 18px; border-radius: 50%; }
-.legend-row span.lbl { font-size: 14px; color: var(--ink-4); }
-.dot-ledig { background: var(--st-ledig-bg); border: 2px solid var(--st-ledig-fg); }
-.dot-reservert { background: var(--st-res-bg); border: 2px solid var(--st-res-fg); }
-.dot-festet { background: var(--st-fest-bg); border: 2px solid var(--st-fest-fg); }
-.kart-legend p { font-size: 13px; line-height: 1.55; color: var(--muted); margin: 0 0 14px;
-  border-top: 1px solid var(--hairline-soft); padding-top: 14px; }
-.kart-legend a { display: inline-flex; align-items: center; gap: 7px;
-  font: 600 13.5px var(--font-ui); color: var(--accent); text-decoration: none; }
-
 /* ---- Detaljside ---- */
 .back-link { display: inline-block; background: none; border: none; cursor: pointer;
   font: 500 14.5px var(--font-ui); color: var(--muted); padding: 6px 0; text-decoration: none; }
@@ -504,7 +469,7 @@ main { flex: 1; }
 @media (max-width: 880px) {
   .nav-links { display: none; }
   .grid-3, .grid-cards, .andre-grid, .om-grid, .footer-grid,
-  .detalj-layout, .kontakt-layout, .kart-layout { grid-template-columns: 1fr; }
+  .detalj-layout, .kontakt-layout { grid-template-columns: 1fr; }
   .om-grid { gap: 32px; }
   .facts, .includes, .form-row { grid-template-columns: 1fr 1fr; }
   .hero-wrap { padding: 78px 20px 84px; }
@@ -525,7 +490,6 @@ main { flex: 1; }
   .gallery-grid { display: block; height: auto; }
   .gallery-main { height: 260px; margin-bottom: 12px; width: 100%; }
   .gallery-thumbs { grid-template-rows: none; grid-template-columns: 1fr 1fr; height: 140px; }
-  .kart-box { height: 380px; }
 }
 
 @media (max-width: 560px) {

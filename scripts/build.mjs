@@ -247,16 +247,16 @@ function oversikt() {
     const b = badge(t.status);
     return {
       nr: t.nr, areal: t.areal, arealTxt: areaTxt(t.areal), status: t.status,
-      utsikt: t.utsikt, sol: t.sol, terreng: t.terreng, x: t.x, y: t.y,
+      utsikt: t.utsikt, sol: t.sol, terreng: t.terreng,
       engangsTxt, festeTxt, href: L.tomt(t.nr),
-      badgeT: b.t, badgeCls: b.cls, badgeFg: b.fg, badgeBg: b.bg,
+      badgeT: b.t, badgeCls: b.cls,
       hasFoto: !!(t.bilder && t.bilder.length),
       heroUrl: (t.bilder && t.bilder.length) ? L.asset(t.bilder[0]) : '',
       heroPos: (t.bilder && t.bilder.length) ? bgpos(t.bilder[0]) : 'center 20%',
     };
   });
 
-  // Filtre og kartforklaring vises kun når dataene gjør dem meningsfulle.
+  // Filtre vises kun når dataene gjør dem meningsfulle.
   const statuser = [...new Set(sorted.map((t) => t.status))];
   const utsikter = [...new Set(sorted.map((t) => t.utsikt).filter(Boolean))];
   const visStatus = statuser.length >= 2;
@@ -284,14 +284,9 @@ function oversikt() {
           ${visStatus ? '<option value="status">Status</option>' : ''}
         </select>
       </div>`;
-  const legendRows = statuser.map((s) => {
-    const b = badge(s);
-    const cls = s === 'Ledig' ? 'dot-ledig' : s === 'Reservert' ? 'dot-reservert' : 'dot-festet';
-    return `<div class="legend-row"><span class="dot ${cls}"></span><span class="lbl">${b.t}</span></div>`;
-  }).join('\n        ');
 
   return head('Hyttetomter til feste — Sandmoen',
-    `Se alle ${sorted.length} hyttetomtene i Felt 4 på Lifjellet — areal, utsikt og festevilkår. Kort, liste og kart.`, L)
+    `Se alle ${sorted.length} hyttetomtene i Felt 4 på Lifjellet — areal, utsikt og festevilkår. Kort og liste.`, L)
     + header(L, 'oversikt')
     + `
 <section class="top-green">
@@ -313,7 +308,6 @@ function oversikt() {
       <div class="viewtoggle" role="group" aria-label="Visning">
         <button type="button" data-view="kort" aria-pressed="true">Kort</button>
         <button type="button" data-view="liste" aria-pressed="false">Liste</button>
-        <button type="button" data-view="kart" aria-pressed="false">Kart</button>
       </div>
     </div>
   </div>
@@ -328,33 +322,11 @@ function oversikt() {
     <div class="table-wrap">
       <table>
         <thead><tr>
-          <th>Tomt</th><th>Areal</th><th>Utsikt</th><th>Sol</th>
+          <th>Tomt</th><th>Areal</th><th>Utsikt</th>
           <th class="num">Engangsbeløp</th><th class="num">Festeavgift</th><th>Status</th><th></th>
         </tr></thead>
         <tbody id="liste-body"></tbody>
       </table>
-    </div>
-  </div>
-
-  <div class="view" id="view-kart">
-    <div class="kart-layout">
-      <div class="kart-box">
-        <svg viewBox="0 0 900 540" preserveAspectRatio="none">
-          <path d="M0 250 C180 220 280 280 460 250 C640 220 760 270 900 250 L900 540 L0 540 Z" fill="#8fb59a" opacity=".4"/>
-          <path d="M520 0 C540 90 470 150 520 250 C560 330 470 420 520 540" stroke="#5d7f88" stroke-width="26" fill="none" opacity=".55"/>
-          <path d="M0 470 C200 450 360 488 560 466 C740 446 820 480 900 466" stroke="#caa15f" stroke-width="9" fill="none" opacity=".7"/>
-          <text x="120" y="120" fill="#3c5a45" font-family="Spectral" font-size="22" opacity=".5">Lifjellet</text>
-          <text x="560" y="300" fill="#3c5566" font-family="Spectral" font-size="20" opacity=".55">Otersjøen</text>
-        </svg>
-        <div id="kart-pins"></div>
-        <div class="kart-note">Skjematisk plan · ikke målsatt</div>
-      </div>
-      <div class="kart-legend">
-        <h3>Forklaring</h3>
-        ${legendRows}
-        <p>Klikk på en tomt i kartet for å se detaljer, bilder og festevilkår.</p>
-        <a href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Reguleringsplan fra Lierne kommune →</a>
-      </div>
     </div>
   </div>
 </div>
