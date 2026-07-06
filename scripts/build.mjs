@@ -161,7 +161,10 @@ function forside() {
     + header(L, 'forside')
     + `
 <section class="hero">
-  <div class="hero-bg" style="background-image:url('${L.asset('tomt7-utsikt.jpeg')}')"></div>
+  <div class="hero-bg" style="background-image:url('${L.asset('hero-poster.jpeg')}')"></div>
+  <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="${L.asset('hero-poster.jpeg')}">
+    <source src="${L.asset('hero-loop.mp4')}" type="video/mp4">
+  </video>
   <div class="hero-veil"></div>
   <div class="wrap hero-wrap">
     <div class="hero-inner">
@@ -174,7 +177,17 @@ function forside() {
       </div>
     </div>
   </div>
+  <button class="hero-videobtn" type="button" aria-haspopup="dialog">
+    <span class="play">▶</span> Se video fra området
+  </button>
 </section>
+
+<div class="videomodal" id="videomodal" hidden role="dialog" aria-label="Videopresentasjon">
+  <button class="vm-close" type="button" aria-label="Lukk">×</button>
+  <video id="vm-video" controls playsinline preload="none" poster="${L.asset('hero-poster.jpeg')}">
+    <source src="${L.asset('hero-full.mp4')}" type="video/mp4">
+  </video>
+</div>
 
 <section class="stats">
   <div class="wrap">
@@ -215,6 +228,7 @@ function forside() {
     <div class="om-photo"><div style="background-image:url('${L.asset('tomt7-1.jpeg')}');background-position:${bgpos('tomt7-1.jpeg')}"></div></div>
   </div>
 </section>
+<script src="${L.js('herovideo.js')}"></script>
 `
     + footer(L);
 }

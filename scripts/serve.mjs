@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 8080;
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',
   '.json': 'application/json', '.jpeg': 'image/jpeg', '.jpg': 'image/jpeg',
-  '.png': 'image/png', '.svg': 'image/svg+xml',
+  '.png': 'image/png', '.svg': 'image/svg+xml', '.mp4': 'video/mp4', '.webm': 'video/webm',
 };
 
 async function resolve(p) {

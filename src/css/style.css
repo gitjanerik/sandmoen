@@ -130,7 +130,38 @@ main { flex: 1; }
 
 /* ---- Hero ---- */
 .hero { position: relative; overflow: hidden; background: var(--green); }
-.hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center 62%; }
+.hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center 40%; }
+.hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+@media (prefers-reduced-motion: reduce) { .hero-video { display: none; } }
+
+/* Diskret videoknapp i hjørnet av hero-en */
+.hero-videobtn {
+  position: absolute; right: 24px; bottom: 22px; z-index: 3;
+  display: inline-flex; align-items: center; gap: 9px;
+  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.4);
+  color: #fff; backdrop-filter: blur(4px);
+  border-radius: 999px; padding: 9px 16px;
+  font: 600 14px var(--font-ui); cursor: pointer; transition: background .16s;
+}
+.hero-videobtn:hover { background: rgba(255,255,255,.26); }
+.hero-videobtn .play {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-size: 9px; padding-left: 1px;
+}
+
+/* Videospiller (modal) */
+.videomodal {
+  position: fixed; inset: 0; z-index: 100; background: rgba(15,20,15,.94);
+  display: flex; align-items: center; justify-content: center; padding: 40px;
+}
+.videomodal[hidden] { display: none; }
+.videomodal video { max-width: 92vw; max-height: 84vh; border-radius: 12px; background: #000; }
+.vm-close {
+  position: absolute; top: 24px; right: 28px; width: 46px; height: 46px;
+  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3);
+  color: #fff; border-radius: 50%; font-size: 24px; line-height: 1; cursor: pointer;
+}
 .hero-veil { position: absolute; inset: 0;
   background: linear-gradient(96deg, rgba(18,28,20,.85) 0%, rgba(18,28,20,.58) 44%, rgba(18,28,20,.12) 100%); }
 .hero-wrap { position: relative; padding-top: 120px; padding-bottom: 130px; }
@@ -460,6 +491,7 @@ main { flex: 1; }
   .om-grid { gap: 32px; }
   .facts, .includes, .form-row { grid-template-columns: 1fr 1fr; }
   .hero-wrap { padding: 78px 20px 84px; }
+  .hero-videobtn { right: 16px; bottom: 16px; padding: 8px 13px; font-size: 13px; }
   .hero h1 { font-size: 38px; }
   .hero p { font-size: 17px; }
   .section { padding-top: 48px; padding-bottom: 48px; }
