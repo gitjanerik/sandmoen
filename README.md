@@ -45,10 +45,11 @@ dist/             # byggeutdata (gitignored, deployes)
   # → skriver src/assets/tomt14-1.jpeg, -2.jpeg … (sortert etter filnavn)
   ```
 
-- **Hero-video**: `src/assets/hero-loop.mp4` er en stum, komprimert bakgrunns-loop;
-  `hero-full.mp4` er full oppløsning (med lyd) som «Se video»-knappen åpner;
-  `hero-poster.jpeg` er fallback. Komprimert med ffmpeg (H.264, `+faststart`) —
-  loop uten lyd (`-an`, crf 34), full versjon crf 23.
+- **Hero-video**: `src/assets/hero-loop.mp4` er en stum bakgrunns-loop i jevn
+  0,3× slow-motion (ffmpeg `minterpolate`, bevegelseskompensert, ekte 30 fps);
+  `hero-full.mp4` er full oppløsning i normal hastighet (med lyd) som
+  «Se video»-knappen åpner; `hero-poster.jpeg` er fallback. H.264, `+faststart`.
+  Hero-videoen vises med lett `blur` + mørkere slør for lesbarhet.
 
 Alle sider bruker relative stier, så samme bygg fungerer både på GitHub Pages
 (undermappe) og på rot-domenet (Domeneshop).
