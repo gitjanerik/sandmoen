@@ -475,6 +475,8 @@ function kontaktside() {
       <label><span>E-post</span><input name="epost" type="email" required placeholder="din@epost.no"></label>
       <label><span>Tomt du er interessert i</span><input name="tomt" id="felt-tomt" placeholder="F.eks. Tomt 7 — eller la stå åpent"></label>
       <label><span>Melding</span><textarea name="melding" rows="4" placeholder="Skriv gjerne litt om hva du lurer på"></textarea></label>
+      <label class="captcha"><span>Kontrollspørsmål: <span id="cap-q">…</span></span><input id="cap-a" inputmode="numeric" autocomplete="off" required placeholder="Ditt svar"></label>
+      <p class="cap-error" id="cap-error" hidden>Feil svar — prøv igjen.</p>
       <button class="btn btn-primary btn-lg" type="submit">Send henvendelse</button>
     </form>
     <div class="form-ok" id="form-ok" hidden>

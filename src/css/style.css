@@ -413,6 +413,8 @@ main { flex: 1; }
 .form-row label { margin-bottom: 0; }
 .form-grid-gap { margin-bottom: 18px; }
 .form .btn { margin-top: 4px; }
+.captcha #cap-q { font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.cap-error { color: #B0392F; font-size: 13.5px; margin: -8px 0 14px; }
 .form-ok { text-align: center; padding: 40px 20px; }
 .form-ok .check { width: 58px; height: 58px; border-radius: 50%; background: var(--st-ledig-bg);
   color: var(--st-ledig-fg); display: flex; align-items: center; justify-content: center;

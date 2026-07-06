@@ -10,8 +10,29 @@
   const tomt = params.get('tomt');
   if (tomt) form.querySelector('#felt-tomt').value = 'Tomt ' + tomt;
 
+  // Enkel innebygd captcha (regnestykke) — stopper enkle bots uten tredjepart.
+  const capQ = document.getElementById('cap-q');
+  const capA = document.getElementById('cap-a');
+  const capErr = document.getElementById('cap-error');
+  let sum = 0;
+  function nyCaptcha() {
+    const a = 1 + Math.floor(Math.random() * 8);
+    const b = 1 + Math.floor(Math.random() * 8);
+    sum = a + b;
+    capQ.textContent = `${a} + ${b} = ?`;
+  }
+  nyCaptcha();
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    if (parseInt(capA.value, 10) !== sum) {
+      capErr.hidden = false;
+      capA.value = '';
+      nyCaptcha();
+      capA.focus();
+      return;
+    }
+    capErr.hidden = true;
     const f = new FormData(form);
     const emne = f.get('tomt') ? `Interesse for ${f.get('tomt')}` : 'Henvendelse fra sandmoen.com';
     const body = [
@@ -28,5 +49,7 @@
   });
 
   const reset = document.getElementById('form-reset');
-  if (reset) reset.addEventListener('click', () => { form.reset(); form.hidden = false; ok.hidden = true; });
+  if (reset) reset.addEventListener('click', () => {
+    form.reset(); form.hidden = false; ok.hidden = true; capErr.hidden = true; nyCaptcha();
+  });
 })();
