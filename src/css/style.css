@@ -261,6 +261,15 @@ main { flex: 1; }
 .top-green .eyebrow { color: var(--on-green-eyebrow); }
 .top-green h1 { font: 600 44px/1.06 var(--font-display); margin: 8px 0 14px; color: #fff; }
 .top-green p { font-size: 16.5px; line-height: 1.6; color: var(--on-green-muted-2); max-width: 680px; margin: 0; }
+.plan-link {
+  display: inline-flex; align-items: center; gap: 9px; margin-top: 20px;
+  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.42);
+  color: #fff; text-decoration: none; backdrop-filter: blur(4px);
+  border-radius: 999px; padding: 11px 20px; font: 600 15.5px var(--font-ui);
+  transition: background .16s;
+}
+.plan-link:hover { background: rgba(255,255,255,.26); }
+.plan-link .ico { font-size: 16px; }
 
 /* ---- Oversikt: filterrad ---- */
 .toolbar {
