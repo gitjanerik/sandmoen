@@ -458,7 +458,6 @@ function detalj(t) {
     <p class="aside-merknad">${esc(merknad)}</p>
     <a class="btn btn-primary btn-block" href="${L.kontakt}?tomt=${t.nr}">Meld interesse for tomt ${t.nr}</a>
     <a class="btn btn-sand btn-block" href="${L.kontakt}">Still et spørsmål</a>
-    <p class="note">Uforpliktende. Vi tar kontakt innen kort tid.</p>
   </aside>
 </div>
 
