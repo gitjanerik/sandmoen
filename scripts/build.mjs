@@ -26,6 +26,9 @@ function badge(status) {
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 // Kort «areal · utsikt · sol» — hopper over tomme felt.
 const metaLine = (t) => [areaTxt(t.areal), t.utsikt, t.sol].filter(Boolean).map(esc).join(' · ');
+// Fokuspunkt for cover-beskjæring per bilde (mer himmel). Standard favoriserer toppen.
+const fokus = config.fokus || {};
+const bgpos = (file) => fokus[file] || 'center 20%';
 
 /* ---------- Relative stier per sidedybde ---------- */
 function links(depth) {
@@ -58,7 +61,7 @@ function tomtCard(t, L, { compact = false } = {}) {
   const b = badge(t.status);
   const h = compact ? 160 : 184;
   const media = (t.bilder && t.bilder.length)
-    ? `<div class="photo" style="background-image:url('${L.asset(t.bilder[0])}')"></div>`
+    ? `<div class="photo" style="background-image:url('${L.asset(t.bilder[0])}');background-position:${bgpos(t.bilder[0])}"></div>`
     : cardPlaceholder(h);
   return `<a class="tomt-card" href="${L.tomt(t.nr)}">
       <div class="media">
@@ -209,7 +212,7 @@ function forside() {
         <span class="tag">Skiløyper &amp; alpint</span>
       </div>
     </div>
-    <div class="om-photo"><div style="background-image:url('${L.asset('tomt7-1.jpeg')}')"></div></div>
+    <div class="om-photo"><div style="background-image:url('${L.asset('tomt7-1.jpeg')}');background-position:${bgpos('tomt7-1.jpeg')}"></div></div>
   </div>
 </section>
 `
@@ -230,6 +233,7 @@ function oversikt() {
       badgeT: b.t, badgeCls: b.cls, badgeFg: b.fg, badgeBg: b.bg,
       hasFoto: !!(t.bilder && t.bilder.length),
       heroUrl: (t.bilder && t.bilder.length) ? L.asset(t.bilder[0]) : '',
+      heroPos: (t.bilder && t.bilder.length) ? bgpos(t.bilder[0]) : 'center 20%',
     };
   });
 
@@ -345,7 +349,9 @@ function oversikt() {
 function detalj(t) {
   const L = links(2);
   const b = badge(t.status);
-  const bilder = (t.bilder || []).map((f) => L.asset(f));
+  const raw = t.bilder || [];
+  const bilder = raw.map((f) => L.asset(f));
+  const pos = raw.map((f) => bgpos(f));
   const hasFoto = bilder.length > 0;
   const andre = tomter.filter((x) => x.status === 'Ledig' && x.nr !== t.nr).slice(0, 3);
 
@@ -354,14 +360,14 @@ function detalj(t) {
     const more = bilder.length - 3;
     gallery = `<div class="gallery-grid">
       <button class="gallery-main" type="button" data-lb="0">
-        <div class="photo" style="background-image:url('${bilder[0]}')"></div>
+        <div class="photo" style="background-image:url('${bilder[0]}');background-position:${pos[0]}"></div>
         <span class="badge ${b.cls}">${b.t}</span>
         <span class="nr">Tomt ${t.nr}</span>
       </button>
       <div class="gallery-thumbs">
-        <button type="button" data-lb="1"><div class="photo" style="background-image:url('${bilder[1] || ''}')"></div></button>
+        <button type="button" data-lb="1"><div class="photo" style="background-image:url('${bilder[1] || ''}');background-position:${pos[1] || 'center 20%'}"></div></button>
         <button type="button" data-lb="2">
-          <div class="photo" style="background-image:url('${bilder[2] || ''}')"></div>
+          <div class="photo" style="background-image:url('${bilder[2] || ''}');background-position:${pos[2] || 'center 20%'}"></div>
           ${more > 0 ? `<span class="gallery-more">+${more} bilder</span>` : ''}
         </button>
       </div>

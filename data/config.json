@@ -17,6 +17,14 @@
     "Skiløyper og jaktterreng",
     "Nær Blåfjella-Skjækerfjella og Lierne nasjonalparker"
   ],
+  "_fokus_kommentar": "background-position per bilde ved cover-beskjæring. Lavere prosent = mer himmel. Standard er 'center 20%'.",
+  "fokus": {
+    "tomt7-utsikt.jpeg": "center 26%",
+    "tomt8-3.jpeg": "center 16%",
+    "tomt14-3.jpeg": "center 30%",
+    "tomt14-5.jpeg": "center 14%",
+    "tomt14-6.jpeg": "center 24%"
+  },
   "kontakt": {
     "navn": "Frode Skjelbred",
     "telefon": "472 774 42",

@@ -13,7 +13,7 @@
     '<svg viewBox="0 0 400 160" preserveAspectRatio="none"><path d="M0 104 L70 78 L140 100 L210 68 L280 96 L350 72 L400 100 L400 160 L0 160 Z" fill="rgba(255,255,255,.07)"/><path d="M0 126 L90 102 L170 122 L250 96 L330 122 L400 104 L400 160 L0 160 Z" fill="rgba(0,0,0,.16)"/></svg>';
 
   const photo = (t) => t.hasFoto
-    ? `<div class="photo" style="background-image:url('${t.heroUrl}')"></div>`
+    ? `<div class="photo" style="background-image:url('${t.heroUrl}');background-position:${t.heroPos}"></div>`
     : placeholder();
 
   const meta = (t) => [t.arealTxt, t.utsikt, t.sol].filter(Boolean).join(' · ');
