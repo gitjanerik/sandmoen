@@ -46,10 +46,9 @@ dist/             # byggeutdata (gitignored, deployes)
   ```
 
 - **Hero-video**: `src/assets/hero-loop.mp4` er en stum bakgrunns-loop i jevn
-  0,15× slow-motion (ffmpeg `minterpolate`, bevegelseskompensert, ekte 30 fps).
-  Loopen dekker første halvdel av scenen i denne farten — samme filstørrelse og
-  loop-lengde som før, bare halvparten så rask. `hero-full.mp4` er hele opptaket
-  i full oppløsning og normal hastighet (med lyd) som «Se video»-knappen åpner;
+  0,15× slow-motion (ffmpeg `minterpolate`, bevegelseskompensert, ekte 30 fps),
+  gjengitt fra et skarpt 1080p-opptak (~70 s, ~1,6 Mbps, ~14 MB). `hero-full.mp4`
+  er full oppløsning i normal hastighet (med lyd) som «Se video»-knappen åpner;
   `hero-poster.jpeg` er fallback. H.264, `+faststart`.
   Hero-videoen vises bak et mørkt slør (`.hero-veil`) for lesbarhet.
 
