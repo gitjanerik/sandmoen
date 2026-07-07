@@ -168,7 +168,7 @@ function forside() {
   <div class="hero-veil"></div>
   <div class="wrap hero-wrap">
     <div class="hero-inner">
-      <span class="pill-light">${esc(sted.felt)}</span>
+      <span class="pill-light">Lifjellet i Lierne</span>
       <h1>Din egen hyttetomt ved Otersjøen</h1>
       <p>${tomter.length} ryddede tomter på fjellet, med strøm framført. Fiske og bål om sommeren, skiløyper og nordlys om vinteren — fire mil fra svenskegrensen, midt i Blåfjella-Skjækerfjella og Lierne nasjonalparker.</p>
       <div class="hero-cta">
