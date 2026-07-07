@@ -10,14 +10,24 @@
     pp.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
     pp.setAttribute('aria-label', playing ? 'Pause bakgrunnsvideo' : 'Spill av bakgrunnsvideo');
   };
-  pp.addEventListener('click', () => { hero.paused ? hero.play().catch(() => {}) : hero.pause(); });
+  // Husk brukerens valg mellom besøk.
+  const KEY = 'sandmoen:hero-video';
+  const savePref = (v) => { try { localStorage.setItem(KEY, v); } catch (e) {} };
+  const readPref = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
+
+  pp.addEventListener('click', () => {
+    if (hero.paused) { savePref('playing'); hero.play().catch(() => {}); }
+    else { savePref('paused'); hero.pause(); }
+  });
   hero.addEventListener('play', sync);
   hero.addEventListener('pause', sync);
   sync();
 
-  // Autospill (muted) for de fleste, men respekter «redusert bevegelse».
+  // Autospill (muted) som standard, men respekter «redusert bevegelse» og lagret valg.
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduceMotion) hero.play().catch(() => {});
+  const pref = readPref();
+  const wantPlay = pref ? pref === 'playing' : !reduceMotion;
+  if (wantPlay) hero.play().catch(() => {});
 })();
 
 // Åpner full-oppløsnings videopresentasjon i en enkel modal (med lyd + kontroller).
