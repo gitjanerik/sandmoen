@@ -60,20 +60,17 @@ Prototypen ligger i handoff-bundelen (`Sandmoen.dc.html`). Den er visuelt komple
 
 ## 5. Server-/deploy-fundament (FERDIG satt opp)
 
-Alt dette er verifisert fungerende i planleggingsøkta:
+Alt dette er verifisert fungerende i planleggingsøkta. Konkrete serverdetaljer
+(host, brukernavn, stier, nøkkelplasseringer) holdes bevisst utenfor dette
+offentlige repoet og oppbevares privat hos utvikler.
 
-- **Host:** Domeneshop, SSH på `login.domeneshop.no` (port 22), bruker `sandmoencom`.
-- **Web-rot bekreftet:** `/home/3/s/sandmoencom/www`
-  - Den kjørende WP-siden ligger i undermappa `www/wordpress/`. Roten inneholder også gammel skrot (FrontPage `_vti_*` fra 2008, `Joomla` fra 2009, `images`, `index_ORIG.html`). **Rør ikke** disse ennå.
-  - Det ligger en `.htaccess` (2021) i roten som trolig styrer ruting til `wordpress/`. **Denne må inspiseres** (`cat ~/www/.htaccess`) før vi bytter — avgjør hvor ny side må ligge. TODO før Fase 2.
-- **SSH deploy-nøkkel (ed25519):**
-  - Privat: `C:\Users\Janer\.ssh\sandmoen_deploy` (skal inn som GitHub Actions-secret ved Fase 2 — ALDRI commites)
-  - Offentlig: lagt i `/home/3/s/sandmoencom/.ssh/authorized_keys` på serveren
-  - Rettigheter satt korrekt: `.ssh` = 700, `authorized_keys` = 600
-  - **Passordfri innlogging testet og virker:** `ssh -i %USERPROFILE%\.ssh\sandmoen_deploy sandmoencom@login.domeneshop.no`
-- **Deploy-metode Fase 2:** GitHub Actions → rsync over SSH til `www/` (eller testmappe `www/ny/` først). Bygg statisk, synk `dist/`.
+- **Host:** Domeneshop, SSH (port 22). Innloggingsdetaljer oppbevares privat.
+- **Web-rot:** bekreftet. Den kjørende WP-siden ligger i en undermappe; roten inneholder også gammel skrot (FrontPage `_vti_*` fra 2008, `Joomla` fra 2009, `images`, `index_ORIG.html`). **Rør ikke** disse ennå.
+  - Det ligger en `.htaccess` (2021) i roten som trolig styrer ruting til WordPress. **Denne må inspiseres** før vi bytter — avgjør hvor ny side må ligge. TODO før Fase 2.
+- **SSH deploy-nøkkel (ed25519):** satt opp og testet — passordfri innlogging virker. Privatnøkkelen ligger kun lokalt hos utvikler og legges inn som GitHub Actions-secret ved Fase 2 (**aldri committet**). Offentlig nøkkel er lagt i `authorized_keys` på serveren med korrekte rettigheter (700/600).
+- **Deploy-metode Fase 2:** GitHub Actions → rsync over SSH til web-roten (eller en testmappe først). Bygg statisk, synk `dist/`.
 
-Lokal maskin: Windows, VS Code. Lokalt repo: `C:\Sourcecode\Sandmoen`.
+Lokal maskin: Windows, VS Code.
 
 ---
 
