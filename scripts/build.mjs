@@ -513,6 +513,27 @@ function kontaktside() {
     + footer(L);
 }
 
+/* ---------- Redirect-side (alias) ---------- */
+// Statisk omdirigering som virker uten serverconfig (GitHub Pages + Domeneshop).
+// Brukes bl.a. for /tomt/ → /tomter/ når man kutter siste ledd av /tomt/<nr>/.
+function redirect(title, to) {
+  return `<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)}</title>
+<link rel="canonical" href="${to}">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=${to}">
+<script>location.replace('${to}' + location.search + location.hash);</script>
+</head>
+<body>
+<p>Omdirigerer til <a href="${to}">hyttetomtene</a> …</p>
+</body>
+</html>`;
+}
+
 /* ---------- Skriv dist/ ---------- */
 function write(rel, html) {
   const out = join(DIST, rel);
@@ -527,6 +548,8 @@ write('index.html', forside());
 write('tomter/index.html', oversikt());
 write('kontakt/index.html', kontaktside());
 for (const t of tomter) write(`tomt/${t.nr}/index.html`, detalj(t));
+// Alias: /tomt/ (uten nummer) → /tomter/ slik at avkortede URL-er lander riktig.
+write('tomt/index.html', redirect('Hyttetomter — Sandmoen', '../tomter/'));
 
 cpSync(join(SRC, 'css'), join(DIST, 'css'), { recursive: true });
 cpSync(join(SRC, 'js'), join(DIST, 'js'), { recursive: true });
