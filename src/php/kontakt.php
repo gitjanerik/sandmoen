@@ -63,7 +63,7 @@ if ($navn === '' || !filter_var($epost, FILTER_VALIDATE_EMAIL)) {
 $navn    = mb_substr($navn, 0, 120);
 $tlf     = mb_substr($tlf, 0, 40);
 $tomt    = mb_substr($tomt, 0, 80);
-$melding = mb_substr($melding, 0, 4000);
+$melding = mb_strcut($melding, 0, 1000, 'UTF-8'); // 1000 bytes, uten å dele et tegn
 
 $emne     = $tomt !== '' ? "Interesse for $tomt" : 'Henvendelse fra sandmoen.com';
 $emne_enc = '=?UTF-8?B?' . base64_encode($emne) . '?=';

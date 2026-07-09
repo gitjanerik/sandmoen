@@ -12,6 +12,24 @@
   const tomt = params.get('tomt');
   if (tomt) form.querySelector('#felt-tomt').value = 'Tomt ' + tomt;
 
+  // Meldingsfelt: tell UTF-8-bytes, tak på 1000. Ved full kvote: en vennlig hilsen.
+  const melding = form.querySelector('textarea[name="melding"]');
+  const teller = document.getElementById('char-count');
+  if (melding && teller) {
+    const MAKS = 1000;
+    const enc = new TextEncoder();
+    const bytes = (s) => enc.encode(s).length;
+    const oppdater = () => {
+      while (bytes(melding.value) > MAKS) melding.value = melding.value.slice(0, -1);
+      const b = bytes(melding.value);
+      const full = b >= MAKS;
+      teller.textContent = full ? 'Du har mye på hjertet — ring oss for en hyggelig prat!' : b + ' / ' + MAKS;
+      teller.classList.toggle('over', full);
+    };
+    melding.addEventListener('input', oppdater);
+    oppdater();
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (sendErr) sendErr.hidden = true;
