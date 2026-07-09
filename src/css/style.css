@@ -287,6 +287,8 @@ main { flex: 1; }
 .notfound p { font-size: 18px; line-height: 1.6; color: var(--ink-2); margin: 0 auto 30px; max-width: 52ch; }
 .notfound-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
 /* ---- Oversikt: filterrad ---- */
 .toolbar {
   display: flex; align-items: center; gap: 14px; flex-wrap: wrap;

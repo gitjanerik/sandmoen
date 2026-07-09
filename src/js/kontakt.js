@@ -1,16 +1,17 @@
-// Kontaktskjema — MIDLERTIDIG mailto-løsning (se HANDOFF §6.1: skal avklares).
-// Forhåndsutfyller tomt fra ?tomt=<nr>, og åpner e-postklient ved innsending.
+// Kontaktskjema — sender via /kontakt.php (server-side e-post på Domeneshop).
+// Forhåndsutfyller tomt fra ?tomt=<nr> og viser bekreftelse uten sidelast.
 (() => {
   const form = document.getElementById('kontakt-form');
   if (!form) return;
   const ok = document.getElementById('form-ok');
-  const epost = 'post@sandmoen.com';
+  const sendErr = document.getElementById('send-error');
+  const btn = form.querySelector('button[type="submit"]');
 
   const params = new URLSearchParams(location.search);
   const tomt = params.get('tomt');
   if (tomt) form.querySelector('#felt-tomt').value = 'Tomt ' + tomt;
 
-  // Enkel innebygd captcha (regnestykke) — stopper enkle bots uten tredjepart.
+  // Enkel innebygd captcha (regnestykke) — litt ekstra friksjon mot bots.
   const capQ = document.getElementById('cap-q');
   const capA = document.getElementById('cap-a');
   const capErr = document.getElementById('cap-error');
@@ -23,8 +24,9 @@
   }
   nyCaptcha();
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (sendErr) sendErr.hidden = true;
     if (parseInt(capA.value, 10) !== sum) {
       capErr.hidden = false;
       capA.value = '';
@@ -33,23 +35,45 @@
       return;
     }
     capErr.hidden = true;
-    const f = new FormData(form);
-    const emne = f.get('tomt') ? `Interesse for ${f.get('tomt')}` : 'Henvendelse fra sandmoen.com';
-    const body = [
-      `Navn: ${f.get('navn') || ''}`,
-      `Telefon: ${f.get('tlf') || ''}`,
-      `E-post: ${f.get('epost') || ''}`,
-      `Tomt: ${f.get('tomt') || ''}`,
-      '',
-      `${f.get('melding') || ''}`,
-    ].join('\n');
-    location.href = `mailto:${epost}?subject=${encodeURIComponent(emne)}&body=${encodeURIComponent(body)}`;
-    form.hidden = true;
-    ok.hidden = false;
+
+    const opprinnelig = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Sender …';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        form.hidden = true;
+        ok.hidden = false;
+        return;
+      }
+      throw new Error(data.melding || 'Kunne ikke sende meldingen.');
+    } catch (err) {
+      if (sendErr) {
+        sendErr.textContent = (err && err.message)
+          ? err.message
+          : 'Noe gikk galt. Prøv igjen, eller send e-post direkte til post@sandmoen.com.';
+        sendErr.hidden = false;
+      }
+      capA.value = '';
+      nyCaptcha();
+    } finally {
+      btn.disabled = false;
+      btn.textContent = opprinnelig;
+    }
   });
 
   const reset = document.getElementById('form-reset');
   if (reset) reset.addEventListener('click', () => {
-    form.reset(); form.hidden = false; ok.hidden = true; capErr.hidden = true; nyCaptcha();
+    form.reset();
+    form.hidden = false;
+    ok.hidden = true;
+    capErr.hidden = true;
+    if (sendErr) sendErr.hidden = true;
+    nyCaptcha();
   });
 })();
