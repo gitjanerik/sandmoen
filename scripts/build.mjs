@@ -489,7 +489,8 @@ function kontaktside() {
 
 <div class="wrap kontakt-layout">
   <div class="form-card">
-    <form class="form" id="kontakt-form" action="mailto:${esc(kontakt.epost)}" method="post" enctype="text/plain">
+    <form class="form" id="kontakt-form" action="/kontakt.php" method="post">
+      <div class="hp" aria-hidden="true"><label>La stå tom<input name="nettsted" tabindex="-1" autocomplete="off"></label></div>
       <div class="form-row form-grid-gap">
         <label><span>Navn</span><input name="navn" required placeholder="Ditt navn"></label>
         <label><span>Telefon</span><input name="tlf" placeholder="Telefonnummer"></label>
@@ -499,6 +500,7 @@ function kontaktside() {
       <label><span>Melding</span><textarea name="melding" rows="4" placeholder="Skriv gjerne litt om hva du lurer på"></textarea></label>
       <label class="captcha"><span>Kontrollspørsmål: <span id="cap-q">…</span></span><input id="cap-a" inputmode="numeric" autocomplete="off" required placeholder="Ditt svar"></label>
       <p class="cap-error" id="cap-error" hidden>Feil svar — prøv igjen.</p>
+      <p class="cap-error" id="send-error" hidden></p>
       <button class="btn btn-primary btn-lg" type="submit">Send henvendelse</button>
     </form>
     <div class="form-ok" id="form-ok" hidden>
@@ -604,6 +606,7 @@ write('.htaccess', 'ErrorDocument 404 /404.html\n');
 cpSync(join(SRC, 'css'), join(DIST, 'css'), { recursive: true });
 cpSync(join(SRC, 'js'), join(DIST, 'js'), { recursive: true });
 cpSync(join(SRC, 'assets'), join(DIST, 'assets'), { recursive: true });
+cpSync(join(SRC, 'php', 'kontakt.php'), join(DIST, 'kontakt.php'));
 
 // sitemap.xml + robots.txt (krever kanonisk domene i config.url)
 if (SITE_URL) {
