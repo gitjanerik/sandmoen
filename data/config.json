@@ -33,6 +33,10 @@
     "epost": "post@sandmoen.com"
   },
   "lenker": {
-    "reguleringsplan": "https://kommunekart.com/klient/IndreNamdal?urlid=98245ea4-4583-4aa0-9a64-fff3153b4252"
+    "reguleringsplan": "https://kommunekart.com/klient/IndreNamdal?urlid=98245ea4-4583-4aa0-9a64-fff3153b4252",
+    "tomtefeste": [
+      { "tekst": "Huseierne – Alt om tomtefeste", "url": "https://www.huseierne.no/alt-om-bolig/eie-bolig/tomtefeste/" },
+      { "tekst": "Statskog – Tomtefeste", "url": "https://www.statskog.no/eiendom/tomtefeste" }
+    ]
   }
 }
