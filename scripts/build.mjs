@@ -220,7 +220,7 @@ function forside() {
   <div class="wrap om-grid">
     <div>
       <span class="eyebrow">Om stedet</span>
-      <h2 class="h2-lg">Et sted som har gått i arv siden 1972</h2>
+      <h2 class="h2-lg">Et sted som har gått i arv i generasjoner</h2>
       <p>Gården Sandmoen ligger ved Otersjøen langs fylkesvei 74, på venstre hånd rett etter at man kommer ned fra Lifjellet. Terje Endseth tok over som 23-åring i 1972 og drev gården til 2010. I dag drives den videre av familien Skjelbred.</p>
       <p>Otersjøen er et godt fiskevann med ørret og røye. Det er fire mil til svenskegrensen, to mil til slalåmbakken på Holand, og terrenget egner seg godt for småviltjakt. Tomtene ligger midt i et av landets fineste turområder.</p>
       <div class="om-tags">
