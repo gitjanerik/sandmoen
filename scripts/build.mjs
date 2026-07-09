@@ -371,11 +371,14 @@ function detalj(t) {
   if (hasFoto) {
     const more = bilder.length - 3;
     gallery = `<div class="gallery-grid">
-      <button class="gallery-main" type="button" data-lb="0">
-        <div class="photo" style="background-image:url('${bilder[0]}');background-position:${pos[0]}"></div>
-        <span class="badge ${b.cls}">${b.t}</span>
-        <span class="nr">Tomt ${t.nr}</span>
-      </button>
+      <div class="gallery-main-wrap">
+        <button class="gallery-main" type="button" data-lb="0">
+          <div class="photo" style="background-image:url('${bilder[0]}');background-position:${pos[0]}"></div>
+          <span class="badge ${b.cls}">${b.t}</span>
+          <span class="nr">Tomt ${t.nr}</span>
+        </button>
+        ${t.video ? `<button class="hero-videobtn gallery-videobtn js-open-video" type="button" aria-haspopup="dialog"><span class="play"><svg viewBox="0 0 24 24" width="9" height="9" fill="currentColor" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg></span> Se video fra tomta</button>` : ''}
+      </div>
       <div class="gallery-thumbs">
         <button type="button" data-lb="1"><div class="photo" style="background-image:url('${bilder[1] || ''}');background-position:${pos[1] || 'center 20%'}"></div></button>
         <button type="button" data-lb="2">
@@ -461,7 +464,6 @@ function detalj(t) {
     <p class="aside-merknad">${esc(merknad)}</p>
     <a class="btn btn-primary btn-block" href="${L.kontakt}?tomt=${t.nr}">Meld interesse for tomt ${t.nr}</a>
     <a class="btn btn-sand btn-block" href="${L.kontakt}">Still et spørsmål</a>
-    ${t.video ? `<button class="btn btn-video btn-block js-open-video" type="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg> Se video fra tomta</button>` : ''}
   </aside>
 </div>
 

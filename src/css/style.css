@@ -173,13 +173,8 @@ main { flex: 1; }
   color: #fff; font: 600 15px var(--font-ui); letter-spacing: .2px;
   text-shadow: 0 1px 4px rgba(0,0,0,.6);
 }
-.btn-video {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  background: var(--field-bg); border-color: var(--hairline); color: var(--ink-3);
-}
-.btn-video:hover { background: #e7e2d3; }
 .hero-veil { position: absolute; inset: 0;
-  background: linear-gradient(96deg, rgba(18,28,20,.80) 0%, rgba(18,28,20,.52) 46%, rgba(18,28,20,.18) 100%); }
+  background: linear-gradient(96deg, rgba(18,28,20,.62) 0%, rgba(18,28,20,.38) 46%, rgba(18,28,20,.12) 100%); }
 .hero-wrap { position: relative; padding-top: 120px; padding-bottom: 130px; }
 .hero-inner { max-width: 640px; animation: fadeUp .6s ease both; }
 .hero h1 { font: 600 60px/1.04 var(--font-display); margin: 20px 0 0; color: #fff; letter-spacing: -.5px; }
@@ -358,7 +353,9 @@ main { flex: 1; }
 .back-link:hover { color: var(--accent); }
 
 .gallery-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 14px; height: 440px; }
-.gallery-main { position: relative; border: none; padding: 0; cursor: pointer;
+.gallery-main-wrap { position: relative; height: 100%; }
+.gallery-videobtn { position: absolute; right: 16px; bottom: 16px; z-index: 2; }
+.gallery-main { position: relative; border: none; padding: 0; cursor: pointer; height: 100%; width: 100%;
   border-radius: 16px; overflow: hidden; background: var(--green); }
 .gallery-main .photo { position: absolute; inset: 0; background-size: cover; background-position: center; }
 .gallery-main .nr { position: absolute; bottom: 18px; left: 20px; color: #fff;
@@ -516,7 +513,8 @@ main { flex: 1; }
   .table-wrap table { min-width: 680px; }
   .detalj-aside { position: static; top: auto; margin-top: 8px; }
   .gallery-grid { display: block; height: auto; }
-  .gallery-main { height: 260px; margin-bottom: 12px; width: 100%; }
+  .gallery-main-wrap { height: 260px; margin-bottom: 12px; }
+  .gallery-main { height: 100%; margin-bottom: 0; width: 100%; }
   .gallery-thumbs { grid-template-rows: none; grid-template-columns: 1fr 1fr; height: 140px; }
 }
 
