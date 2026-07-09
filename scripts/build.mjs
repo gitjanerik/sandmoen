@@ -108,9 +108,7 @@ function head(title, desc, L, path = '', opts = {}) {
 <meta name="description" content="${esc(desc)}">
 <meta name="theme-color" content="#26412f">
 <link rel="icon" href="${FAVICON}">${seo}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="${L.root}css/fonts.css">
 <link rel="stylesheet" href="${L.css}">
 </head>
 <body>
