@@ -84,9 +84,9 @@ function tomtCard(t, L, { compact = false } = {}) {
 /* ---------- Head + rammer ---------- */
 const FAVICON = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%2326412f'/><text x='20' y='28' font-family='Georgia,serif' font-size='22' font-weight='700' fill='%23F4F0E6' text-anchor='middle'>S</text></svg>";
 
-function head(title, desc, L, path = '') {
+function head(title, desc, L, path = '', opts = {}) {
   const canonical = SITE_URL ? SITE_URL + '/' + path : '';
-  const seo = SITE_URL ? `
+  const seo = opts.noindex ? '\n<meta name="robots" content="noindex">' : SITE_URL ? `
 <link rel="canonical" href="${canonical}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Sandmoen">
@@ -552,6 +552,35 @@ function redirect(title, to) {
 </html>`;
 }
 
+/* ---------- 404-side (grasiøs landing for døde/gamle lenker) ---------- */
+function notFound() {
+  // Serveres for vilkårlige URL-er, så alle lenker må være rot-absolutte.
+  const L = {
+    root: '/', home: '/', oversikt: '/tomter/', kontakt: '/kontakt/',
+    css: '/css/style.css', tomt: (nr) => '/tomt/' + nr + '/',
+    asset: (f) => '/assets/' + f, js: (f) => '/js/' + f,
+  };
+  return head('Side ikke funnet — Sandmoen',
+    'Siden finnes ikke. Sandmoen har fått nye nettsider — gå til forsiden eller se de ledige hyttetomtene.',
+    L, '', { noindex: true })
+    + header(L, '')
+    + `
+<section class="notfound-section">
+  <div class="wrap">
+    <div class="notfound">
+      <span class="eyebrow">404 · Side ikke funnet</span>
+      <h1>Denne siden finnes ikke lenger</h1>
+      <p>Sandmoen har fått nye nettsider. Siden du lette etter kan ha flyttet eller blitt fjernet. Prøv forsiden, eller se de ledige hyttetomtene.</p>
+      <div class="notfound-cta">
+        <a class="btn btn-primary" href="/">Til forsiden</a>
+        <a class="btn btn-sand" href="/tomter/">Se hyttetomtene</a>
+      </div>
+    </div>
+  </div>
+</section>`
+    + footer(L);
+}
+
 /* ---------- Skriv dist/ ---------- */
 function write(rel, html) {
   const out = join(DIST, rel);
@@ -568,6 +597,9 @@ write('kontakt/index.html', kontaktside());
 for (const t of tomter) write(`tomt/${t.nr}/index.html`, detalj(t));
 // Alias: /tomt/ (uten nummer) → /tomter/ slik at avkortede URL-er lander riktig.
 write('tomt/index.html', redirect('Hyttetomter — Sandmoen', '../tomter/'));
+// Grasiøs 404 + Apache ErrorDocument for gamle/døde lenker (f.eks. WordPress-URL-er).
+write('404.html', notFound());
+write('.htaccess', 'ErrorDocument 404 /404.html\n');
 
 cpSync(join(SRC, 'css'), join(DIST, 'css'), { recursive: true });
 cpSync(join(SRC, 'js'), join(DIST, 'js'), { recursive: true });
