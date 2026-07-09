@@ -10,7 +10,9 @@ const DIST = join(ROOT, 'dist');
 
 const tomter = JSON.parse(readFileSync(join(ROOT, 'data/tomter.json'), 'utf8'));
 const config = JSON.parse(readFileSync(join(ROOT, 'data/config.json'), 'utf8'));
-const { vilkaar, kontakt, sted, lenker, folgerMed, merknad } = config;
+const { vilkaar, kontakt, sted, lenker, folgerMed, merknad, url } = config;
+const SITE_URL = (url || '').replace(/\/$/, '');
+const OG_IMAGE = SITE_URL + '/assets/hero-poster.jpeg';
 
 /* ---------- Formatering (speiler prototypens hjelpere) ---------- */
 const kr = (n) => 'kr ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -82,7 +84,21 @@ function tomtCard(t, L, { compact = false } = {}) {
 /* ---------- Head + rammer ---------- */
 const FAVICON = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%2326412f'/><text x='20' y='28' font-family='Georgia,serif' font-size='22' font-weight='700' fill='%23F4F0E6' text-anchor='middle'>S</text></svg>";
 
-function head(title, desc, L) {
+function head(title, desc, L, path = '') {
+  const canonical = SITE_URL ? SITE_URL + '/' + path : '';
+  const seo = SITE_URL ? `
+<link rel="canonical" href="${canonical}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sandmoen">
+<meta property="og:locale" content="nb_NO">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:url" content="${canonical}">
+<meta property="og:image" content="${OG_IMAGE}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(desc)}">
+<meta name="twitter:image" content="${OG_IMAGE}">` : '';
   return `<!DOCTYPE html>
 <html lang="no">
 <head>
@@ -90,7 +106,8 @@ function head(title, desc, L) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
-<link rel="icon" href="${FAVICON}">
+<meta name="theme-color" content="#26412f">
+<link rel="icon" href="${FAVICON}">${seo}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -286,7 +303,7 @@ function oversikt() {
       </div>`;
 
   return head('Hyttetomter til feste — Sandmoen',
-    `Se alle ${sorted.length} hyttetomtene i Felt 4 på Lifjellet — areal, utsikt og festevilkår. Kort og liste.`, L)
+    `Se alle ${sorted.length} hyttetomtene i Felt 4 på Lifjellet — areal, utsikt og festevilkår. Kort og liste.`, L, 'tomter/')
     + header(L, 'oversikt')
     + `
 <section class="top-green">
@@ -390,7 +407,7 @@ function detalj(t) {
 <script src="${L.js('lightbox.js')}"></script>` : '';
 
   return head(`Hyttetomt ${t.nr} — Sandmoen`,
-    `Hyttetomt ${t.nr} ved Otersjøen — ${areaTxt(t.areal)}, utsikt ${t.utsikt}, ${b.t.toLowerCase()}. Engangsbeløp ${engangsTxt}, festeavgift ${festeTxt}.`, L)
+    `Hyttetomt ${t.nr} ved Otersjøen — ${areaTxt(t.areal)}, utsikt ${t.utsikt}, ${b.t.toLowerCase()}. Engangsbeløp ${engangsTxt}, festeavgift ${festeTxt}.`, L, `tomt/${t.nr}/`)
     + header(L, 'oversikt')
     + `
 <div class="wrap" style="padding-top:24px;padding-bottom:14px">
@@ -458,7 +475,7 @@ ${lightbox}
 function kontaktside() {
   const L = links(1);
   return head('Kontakt & meld interesse — Sandmoen',
-    'Meld interesse for en hyttetomt ved Otersjøen. Kontakt Frode Skjelbred på 472 774 42 eller post@sandmoen.com.', L)
+    'Meld interesse for en hyttetomt ved Otersjøen. Kontakt Frode Skjelbred på 472 774 42 eller post@sandmoen.com.', L, 'kontakt/')
     + header(L, 'kontakt')
     + `
 <section class="top-green">
@@ -555,5 +572,17 @@ cpSync(join(SRC, 'css'), join(DIST, 'css'), { recursive: true });
 cpSync(join(SRC, 'js'), join(DIST, 'js'), { recursive: true });
 cpSync(join(SRC, 'assets'), join(DIST, 'assets'), { recursive: true });
 
+// sitemap.xml + robots.txt (krever kanonisk domene i config.url)
+if (SITE_URL) {
+  const routes = ['', 'tomter/', 'kontakt/', ...tomter.map((t) => `tomt/${t.nr}/`)];
+  const urls = routes.map((r) => `  <url><loc>${SITE_URL}/${r}</loc></url>`).join('\n');
+  write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>
+`);
+  write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+}
+
 const pages = 3 + tomter.length;
-console.log(`Bygde ${pages} sider til dist/ (${tomter.length} tomtesider).`);
+console.log(`Bygde ${pages} sider til dist/ (${tomter.length} tomtesider)${SITE_URL ? ' + sitemap.xml/robots.txt' : ''}.`);
