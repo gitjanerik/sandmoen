@@ -449,7 +449,9 @@ main { flex: 1; }
 .form label { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
 .form label > span { font: 600 13.5px var(--font-ui); color: var(--ink-3); }
 .form input, .form textarea { background: var(--field-bg); font-weight: 400; }
-.form textarea { resize: vertical; min-height: 108px; }
+.form textarea { resize: vertical; min-height: 108px; field-sizing: content; max-height: 340px; }
+.char-count { margin: -12px 0 18px; text-align: right; font: 500 12.5px var(--font-ui); color: var(--muted); }
+.char-count.over { color: #B0392F; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .form-row label { margin-bottom: 0; }
 .form-grid-gap { margin-bottom: 18px; }

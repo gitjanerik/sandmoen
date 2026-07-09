@@ -509,7 +509,8 @@ function kontaktside() {
       </div>
       <label><span>E-post</span><input name="epost" type="email" required placeholder="din@epost.no"></label>
       <label><span>Tomt du er interessert i</span><input name="tomt" id="felt-tomt" placeholder="F.eks. Tomt 7 — eller la stå åpent"></label>
-      <label><span>Melding</span><textarea name="melding" rows="4" placeholder="Skriv gjerne litt om hva du lurer på"></textarea></label>
+      <label><span>Melding</span><textarea name="melding" rows="4" maxlength="1000" placeholder="Skriv gjerne litt om hva du lurer på"></textarea></label>
+      <p class="char-count" id="char-count" aria-live="polite">0 / 1000</p>
       <p class="cap-error" id="send-error" hidden></p>
       <button class="btn btn-primary btn-lg" type="submit">Send henvendelse</button>
     </form>
