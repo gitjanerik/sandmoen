@@ -10,7 +10,7 @@ const DIST = join(ROOT, 'dist');
 
 const tomter = JSON.parse(readFileSync(join(ROOT, 'data/tomter.json'), 'utf8'));
 const config = JSON.parse(readFileSync(join(ROOT, 'data/config.json'), 'utf8'));
-const { vilkaar, kontakt, sted, lenker, folgerMed, merknad, url } = config;
+const { vilkaar, kontakt, sted, lenker, folgerMed, merknad, url, heroVideoTekst } = config;
 const SITE_URL = (url || '').replace(/\/$/, '');
 const OG_IMAGE = SITE_URL + '/assets/hero-poster.jpeg';
 
@@ -196,18 +196,12 @@ function forside() {
     <button class="hero-playpause" type="button" aria-label="Spill av bakgrunnsvideo">
       <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg>
     </button>
-    <button class="hero-videobtn" type="button" aria-haspopup="dialog">
+    <button class="hero-videobtn js-open-video" type="button" aria-haspopup="dialog">
       <span class="play"><svg viewBox="0 0 24 24" width="9" height="9" fill="currentColor" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg></span> Se video fra området
     </button>
   </div>
 </section>
-
-<div class="videomodal" id="videomodal" hidden role="dialog" aria-label="Videopresentasjon">
-  <button class="vm-close" type="button" aria-label="Lukk">×</button>
-  <video id="vm-video" controls playsinline preload="none" poster="${L.asset('hero-poster.jpeg')}">
-    <source src="${L.asset('hero-full.mp4')}" type="video/mp4">
-  </video>
-</div>
+${videoModal(L, { video: 'hero-full.mp4', poster: 'hero-full-poster.jpeg', caption: heroVideoTekst })}
 
 <section class="stats">
   <div class="wrap">
@@ -249,6 +243,7 @@ function forside() {
   </div>
 </section>
 <script src="${L.js('herovideo.js')}"></script>
+<script src="${L.js('videomodal.js')}"></script>
 `
     + footer(L);
 }
@@ -414,6 +409,11 @@ function detalj(t) {
 </div>
 <script src="${L.js('lightbox.js')}"></script>` : '';
 
+  const videoBlock = t.video
+    ? videoModal(L, { video: t.video, poster: t.videoPoster || t.bilder?.[0] || 'hero-poster.jpeg', caption: t.videoTekst })
+      + `\n<script src="${L.js('videomodal.js')}"></script>`
+    : '';
+
   return head(`Hyttetomt ${t.nr} — Sandmoen`,
     `Hyttetomt ${t.nr} ved Otersjøen — ${areaTxt(t.areal)}, utsikt ${t.utsikt}, ${b.t.toLowerCase()}. Engangsbeløp ${engangsTxt}, festeavgift ${festeTxt}.`, L, `tomt/${t.nr}/`)
     + header(L, 'oversikt')
@@ -461,6 +461,7 @@ function detalj(t) {
     <p class="aside-merknad">${esc(merknad)}</p>
     <a class="btn btn-primary btn-block" href="${L.kontakt}?tomt=${t.nr}">Meld interesse for tomt ${t.nr}</a>
     <a class="btn btn-sand btn-block" href="${L.kontakt}">Still et spørsmål</a>
+    ${t.video ? `<button class="btn btn-video btn-block js-open-video" type="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg> Se video fra tomta</button>` : ''}
   </aside>
 </div>
 
@@ -476,6 +477,7 @@ function detalj(t) {
   </div>
 </section>
 ${lightbox}
+${videoBlock}
 `
     + footer(L);
 }
@@ -558,6 +560,18 @@ function redirect(title, to) {
 <p>Omdirigerer til <a href="${to}">hyttetomtene</a> …</p>
 </body>
 </html>`;
+}
+
+/* ---------- Video-modal (fullskjerms videopresentasjon) ---------- */
+function videoModal(L, { video, poster, caption }) {
+  return `
+<div class="videomodal" id="videomodal" hidden role="dialog" aria-label="Videopresentasjon">
+  <button class="vm-close" type="button" aria-label="Lukk">×</button>
+  ${caption ? `<p class="vm-caption">${esc(caption)}</p>` : ''}
+  <video id="vm-video" controls playsinline preload="none" poster="${L.asset(poster)}">
+    <source src="${L.asset(video)}" type="video/mp4">
+  </video>
+</div>`;
 }
 
 /* ---------- 404-side (grasiøs landing for døde/gamle lenker) ---------- */
