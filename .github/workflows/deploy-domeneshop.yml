@@ -29,8 +29,11 @@ jobs:
       - name: Sett opp SSH
         run: |
           mkdir -p ~/.ssh
-          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          # Strip evt. CR (Windows CRLF) — OpenSSH godtar ikke CR i privatnøkkelen.
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" | tr -d '\r' > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+          ssh-keygen -y -f ~/.ssh/deploy_key >/dev/null \
+            || { echo "::error::DEPLOY_SSH_KEY er ikke en gyldig OpenSSH-privatnøkkel. Lim inn HELE nøkkelen inkl. -----BEGIN/END----- linjene."; exit 1; }
           PORT="${{ secrets.DEPLOY_PORT }}"; PORT="${PORT:-22}"
           ssh-keyscan -p "$PORT" -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
       - name: Rsync dist/ til server
