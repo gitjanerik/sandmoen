@@ -313,6 +313,17 @@ function oversikt() {
   </div>
 </section>
 
+<section class="feste-info">
+  <div class="wrap">
+    <h2>Nytt med tomtefeste?</h2>
+    <p>Med tomtefeste leier du tomta på en langsiktig kontrakt og eier hytta selv. Vil du sette deg inn i regler og rettigheter, anbefaler vi disse uavhengige kildene:</p>
+    <div class="feste-lenker">
+      ${(lenker.tomtefeste || []).map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.tekst)} →</a>`).join('\n      ')}
+    </div>
+    <p class="feste-tips">Tips: Statskog har en nyttig «Dette lurer andre på»-seksjon med vanlige spørsmål og svar.</p>
+  </div>
+</section>
+
 <div class="wrap" style="padding-top:26px;padding-bottom:80px">
   <div class="toolbar">
       ${statusField}

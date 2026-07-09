@@ -289,6 +289,14 @@ main { flex: 1; }
 
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
+.feste-info { padding: 30px 0 6px; }
+.feste-info h2 { font: 600 22px var(--font-display); color: var(--ink); margin: 0 0 8px; }
+.feste-info p { font-size: 15.5px; line-height: 1.6; color: var(--ink-2); margin: 0 0 12px; max-width: 62ch; }
+.feste-lenker { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-bottom: 12px; }
+.feste-lenker a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.feste-lenker a:hover { text-decoration: underline; }
+.feste-tips { font-size: 14px; color: var(--ink-3); margin: 0; }
+
 /* ---- Oversikt: filterrad ---- */
 .toolbar {
   display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
