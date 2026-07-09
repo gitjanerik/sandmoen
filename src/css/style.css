@@ -168,6 +168,16 @@ main { flex: 1; }
   background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3);
   color: #fff; border-radius: 50%; font-size: 24px; line-height: 1; cursor: pointer;
 }
+.vm-caption {
+  position: absolute; top: 30px; left: 30px; right: 86px; margin: 0;
+  color: #fff; font: 600 15px var(--font-ui); letter-spacing: .2px;
+  text-shadow: 0 1px 4px rgba(0,0,0,.6);
+}
+.btn-video {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--field-bg); border-color: var(--hairline); color: var(--ink-3);
+}
+.btn-video:hover { background: #e7e2d3; }
 .hero-veil { position: absolute; inset: 0;
   background: linear-gradient(96deg, rgba(18,28,20,.80) 0%, rgba(18,28,20,.52) 46%, rgba(18,28,20,.18) 100%); }
 .hero-wrap { position: relative; padding-top: 120px; padding-bottom: 130px; }
