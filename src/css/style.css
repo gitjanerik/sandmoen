@@ -127,7 +127,7 @@ main { flex: 1; }
 
 /* ---- Hero ---- */
 .hero { position: relative; overflow: hidden; background: var(--green); }
-.hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center 40%; }
+.hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center 30%; }
 .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%;
   transform: scale(1.045); transform-origin: center; backface-visibility: hidden; will-change: transform; }
 
@@ -177,15 +177,16 @@ main { flex: 1; }
   background: linear-gradient(96deg, rgba(18,28,20,.62) 0%, rgba(18,28,20,.38) 46%, rgba(18,28,20,.12) 100%); }
 .hero-wrap { position: relative; padding-top: 120px; padding-bottom: 130px; }
 .hero-inner { max-width: 640px; animation: fadeUp .6s ease both; }
-.hero h1 { font: 600 60px/1.04 var(--font-display); margin: 20px 0 0; color: #fff; letter-spacing: -.5px; }
+.hero h1 { font: 600 60px/1.04 var(--font-display); margin: 20px 0 0; color: #fff; letter-spacing: -.5px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35), 0 2px 14px rgba(0,0,0,.42); }
 .hero p { font-size: 19px; line-height: 1.55; color: #e9ede5; margin: 20px 0 0; max-width: 560px; }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 30px; }
 .pill-light {
   display: inline-block;
-  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.32);
+  background: var(--accent); border: 1px solid var(--accent);
   color: #fff; font: 600 12.5px var(--font-ui);
   letter-spacing: .12em; text-transform: uppercase;
-  padding: 6px 13px; border-radius: 999px; backdrop-filter: blur(4px);
+  padding: 6px 13px; border-radius: 999px;
 }
 
 /* ---- Statistikkstripe ---- */
