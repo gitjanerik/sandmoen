@@ -1,0 +1,46 @@
+name: Deploy til Domeneshop (SSH/rsync)
+
+# Fase 2. Kjøres MANUELT (workflow_dispatch) — ikke automatisk ved push ennå.
+# Krever repo-secrets: DEPLOY_SSH_KEY, DEPLOY_HOST, DEPLOY_USER, DEPLOY_PATH, (valgfritt) DEPLOY_PORT.
+# VIKTIG: DEPLOY_PATH må peke på en DEDIKERT mappe (f.eks. .../www/ny), aldri WP-roten.
+
+on:
+  workflow_dispatch:
+    inputs:
+      slett_gamle:
+        description: "Slett filer på server som ikke finnes i dist/ (rsync --delete). Kun trygt i en dedikert mappe."
+        type: boolean
+        default: false
+
+concurrency:
+  group: domeneshop
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Bygg statisk nettsted
+        run: node scripts/build.mjs
+      - name: Sett opp SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          PORT="${{ secrets.DEPLOY_PORT }}"; PORT="${PORT:-22}"
+          ssh-keyscan -p "$PORT" -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+      - name: Rsync dist/ til server
+        run: |
+          PORT="${{ secrets.DEPLOY_PORT }}"; PORT="${PORT:-22}"
+          TARGET="${{ secrets.DEPLOY_PATH }}"
+          if [ -z "$TARGET" ]; then echo "DEPLOY_PATH mangler"; exit 1; fi
+          DEL=""
+          if [ "${{ github.event.inputs.slett_gamle }}" = "true" ]; then DEL="--delete"; fi
+          rsync -avz $DEL --no-perms --omit-dir-times \
+            -e "ssh -i ~/.ssh/deploy_key -p $PORT -o StrictHostKeyChecking=yes" \
+            dist/ "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:$TARGET/"
+          echo "Deployet dist/ → $TARGET"
