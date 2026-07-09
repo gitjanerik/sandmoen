@@ -437,6 +437,7 @@ function detalj(t) {
     </div>
 
     <h2>Plassering i feltet</h2>
+    <p class="plan-info">${t.bfr ? `I reguleringsplanen er dette <strong>${esc(t.bfr)}</strong>. ` : ''}<a href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Se tomta i reguleringsplanen (kommunekart) →</a></p>
     <div class="felt-kart">
       <div class="img" style="background-image:url('${L.asset('felt4-kart.png')}')"></div>
       <span class="note">Reguleringskart · Lierne kommune</span>
