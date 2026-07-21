@@ -83,8 +83,13 @@ function turnstile_ok(string $token, string $ip): bool {
 function ser_ut_som_spam(string $navn, string $tomt, string $melding): bool {
   $alt = $navn . ' ' . $tomt . ' ' . $melding;
   // 1. Lenker — nesten all skjema-spam inneholder en URL.
-  if (preg_match('#https?://|www\.#i', $alt)) return true;
-  if (preg_match('#\b[a-z0-9-]+\.(com|net|org|ru|top|xyz|io|info|biz|shop|online|site|club|link)\b#i', $alt)) return true;
+  //    Nettstedets eget domene skal alltid kunne nevnes, så det fjernes først.
+  $lenkesjekk = str_ireplace(
+    ['https://www.sandmoen.com', 'http://www.sandmoen.com',
+     'https://sandmoen.com', 'http://sandmoen.com', 'www.sandmoen.com', 'sandmoen.com'],
+    ' ', $alt);
+  if (preg_match('#https?://|www\.#i', $lenkesjekk)) return true;
+  if (preg_match('#\b[a-z0-9-]+\.(com|net|org|ru|top|xyz|io|info|biz|shop|online|site|club|link)\b#i', $lenkesjekk)) return true;
   // 2. Ikke-latinsk skrift (armensk, kyrillisk, kinesisk, arabisk osv.).
   //    En norsk/svensk hytteside får kun latinsk tekst (æøåäö ligger i Latin-1).
   if (preg_match('/[\p{Armenian}\p{Cyrillic}\p{Arabic}\p{Han}\p{Hiragana}\p{Katakana}\p{Hangul}\p{Hebrew}\p{Greek}\p{Thai}\p{Devanagari}]/u', $melding)) return true;

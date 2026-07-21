@@ -505,6 +505,7 @@ function kontaktside() {
       <label><span>Tomt du er interessert i</span><input name="tomt" id="felt-tomt" placeholder="F.eks. Tomt 7 — eller la stå åpent"></label>
       <label><span>Melding</span><textarea name="melding" rows="4" maxlength="1000" placeholder="Skriv gjerne litt om hva du lurer på"></textarea></label>
       <p class="char-count" id="char-count" aria-live="polite">0 / 1000</p>
+      <p class="skjema-hint">Tips: unngå å lime inn nettlenker – meldinger med lenker blir stoppet automatisk.</p>
       ${TURNSTILE_SITE_KEY ? `<div class="cf-turnstile" data-sitekey="${TURNSTILE_SITE_KEY}" data-language="nb"></div>` : ''}
       <p class="cap-error" id="send-error" hidden></p>
       <button class="btn btn-primary btn-lg" type="submit">Send henvendelse</button>
