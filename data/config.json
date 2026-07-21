@@ -2,7 +2,7 @@
   "url": "https://www.sandmoen.com",
   "turnstile": {
     "_kommentar": "Cloudflare Turnstile site key (offentlig, trygg å committe). Tom = widget vises ikke. Hemmelig nøkkel settes som GitHub-secret TURNSTILE_SECRET, se SPAMVERN.md.",
-    "siteKey": ""
+    "siteKey": "0x4AAAAAAD6o-A5Yb1wCL5h6"
   },
   "sted": {
     "navn": "Sandmoen",
