@@ -26,6 +26,17 @@ jobs:
           node-version: 20
       - name: Bygg statisk nettsted
         run: node scripts/build.mjs
+      - name: Sett inn Turnstile-secret
+        env:
+          TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
+        run: |
+          if [ -n "$TURNSTILE_SECRET" ]; then
+            ESC=$(printf '%s' "$TURNSTILE_SECRET" | sed -e 's/[&/\]/\\&/g')
+            sed -i "s/@@TURNSTILE_SECRET@@/$ESC/" dist/kontakt.php
+            echo "Turnstile-secret satt inn i dist/kontakt.php."
+          else
+            echo "TURNSTILE_SECRET ikke satt — Turnstile forblir av (plassholder beholdt)."
+          fi
       - name: Sett opp SSH
         run: |
           mkdir -p ~/.ssh

@@ -13,6 +13,8 @@ const config = JSON.parse(readFileSync(join(ROOT, 'data/config.json'), 'utf8'));
 const { vilkaar, kontakt, sted, lenker, folgerMed, merknad, url, heroVideoTekst } = config;
 const SITE_URL = (url || '').replace(/\/$/, '');
 const OG_IMAGE = SITE_URL + '/assets/hero-poster.jpeg';
+// Turnstile-widget vises kun når site key er satt i config (se SPAMVERN.md).
+const TURNSTILE_SITE_KEY = (config.turnstile && config.turnstile.siteKey) || '';
 
 /* ---------- Formatering (speiler prototypens hjelpere) ---------- */
 const kr = (n) => 'kr ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -503,6 +505,7 @@ function kontaktside() {
       <label><span>Tomt du er interessert i</span><input name="tomt" id="felt-tomt" placeholder="F.eks. Tomt 7 — eller la stå åpent"></label>
       <label><span>Melding</span><textarea name="melding" rows="4" maxlength="1000" placeholder="Skriv gjerne litt om hva du lurer på"></textarea></label>
       <p class="char-count" id="char-count" aria-live="polite">0 / 1000</p>
+      ${TURNSTILE_SITE_KEY ? `<div class="cf-turnstile" data-sitekey="${TURNSTILE_SITE_KEY}" data-language="nb"></div>` : ''}
       <p class="cap-error" id="send-error" hidden></p>
       <button class="btn btn-primary btn-lg" type="submit">Send henvendelse</button>
     </form>
@@ -531,6 +534,7 @@ function kontaktside() {
     </div>
   </aside>
 </div>
+${TURNSTILE_SITE_KEY ? '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' : ''}
 <script src="${L.js('kontakt.js')}"></script>
 `
     + footer(L);
