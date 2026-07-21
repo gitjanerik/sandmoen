@@ -57,6 +57,7 @@
           : 'Noe gikk galt. Prøv igjen, eller send e-post direkte til post@sandmoen.com.';
         sendErr.hidden = false;
       }
+      if (window.turnstile) window.turnstile.reset(); // token er engangsbruk
     } finally {
       btn.disabled = false;
       btn.textContent = opprinnelig;
@@ -69,5 +70,6 @@
     form.hidden = false;
     ok.hidden = true;
     if (sendErr) sendErr.hidden = true;
+    if (window.turnstile) window.turnstile.reset();
   });
 })();
