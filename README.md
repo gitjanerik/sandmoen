@@ -45,6 +45,17 @@ dist/             # byggeutdata (gitignored, deployes)
   # → skriver src/assets/tomt14-1.jpeg, -2.jpeg … (sortert etter filnavn)
   ```
 
+  Legger du til en **ny serie** på en tomt som allerede har bilder, bruk `--label`
+  så de eksisterende filene ikke overskrives:
+
+  ```bash
+  node scripts/optimize-images.mjs 14 ~/vinterbilder --label vinter27
+  # → skriver src/assets/tomt14-vinter27-1.jpeg, -2.jpeg …
+  ```
+
+  Rekkefølgen i `bilder`-lista bestemmer visningen: første bilde er hovedbildet på
+  detaljsiden og på kortet i oversikten.
+
 - **Hero-video**: `src/assets/hero-loop.mp4` er en stum bakgrunns-loop i jevn
   0,15× slow-motion (ffmpeg `minterpolate`, bevegelseskompensert, ekte 30 fps),
   gjengitt fra et skarpt 1080p-opptak (~70 s, ~1,6 Mbps, ~14 MB). `hero-full.mp4`

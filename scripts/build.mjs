@@ -363,8 +363,9 @@ function detalj(t) {
 
   let gallery;
   if (hasFoto) {
+    const thumbs = bilder.slice(1, 3);
     const more = bilder.length - 3;
-    gallery = `<div class="gallery-grid">
+    gallery = `<div class="gallery-grid${thumbs.length ? '' : ' gallery-grid-solo'}">
       <div class="gallery-main-wrap">
         <button class="gallery-main" type="button" data-lb="0">
           <div class="photo" style="background-image:url('${bilder[0]}');background-position:${pos[0]}"></div>
@@ -373,13 +374,12 @@ function detalj(t) {
         </button>
         ${t.video ? `<button class="hero-videobtn gallery-videobtn js-open-video" type="button" aria-haspopup="dialog"><span class="play"><svg viewBox="0 0 24 24" width="9" height="9" fill="currentColor" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg></span> Se video fra tomta</button>` : ''}
       </div>
-      <div class="gallery-thumbs">
-        <button type="button" data-lb="1"><div class="photo" style="background-image:url('${bilder[1] || ''}');background-position:${pos[1] || 'center 20%'}"></div></button>
-        <button type="button" data-lb="2">
-          <div class="photo" style="background-image:url('${bilder[2] || ''}');background-position:${pos[2] || 'center 20%'}"></div>
-          ${more > 0 ? `<span class="gallery-more">+${more} bilder</span>` : ''}
-        </button>
-      </div>
+      ${thumbs.length ? `<div class="gallery-thumbs${thumbs.length === 1 ? ' gallery-thumbs-1' : ''}">
+        ${thumbs.map((src, i) => `<button type="button" data-lb="${i + 1}">
+          <div class="photo" style="background-image:url('${src}');background-position:${pos[i + 1]}"></div>
+          ${i === thumbs.length - 1 && more > 0 ? `<span class="gallery-more">+${more} bilder</span>` : ''}
+        </button>`).join('')}
+      </div>` : ''}
     </div>`;
   } else {
     gallery = `<div class="ph-grid">
