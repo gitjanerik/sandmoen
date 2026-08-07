@@ -363,6 +363,9 @@ main { flex: 1; }
   font: 600 38px var(--font-display); text-shadow: 0 2px 14px rgba(0,0,0,.55); }
 .gallery-main .badge { position: absolute; top: 16px; left: 16px; font-size: 12.5px; padding: 6px 13px; }
 .gallery-thumbs { display: grid; grid-template-rows: 1fr 1fr; gap: 14px; }
+/* Færre enn 3 bilder: ingen tomme ruter */
+.gallery-thumbs-1 { grid-template-rows: 1fr; }
+.gallery-grid-solo { grid-template-columns: 1fr; }
 .gallery-thumbs button { position: relative; border: none; padding: 0; cursor: pointer;
   border-radius: 16px; overflow: hidden; background: var(--green); }
 .gallery-thumbs .photo { position: absolute; inset: 0; background-size: cover; background-position: center; }
@@ -520,6 +523,7 @@ main { flex: 1; }
   .gallery-main-wrap { height: 260px; margin-bottom: 12px; }
   .gallery-main { height: 100%; margin-bottom: 0; width: 100%; }
   .gallery-thumbs { grid-template-rows: none; grid-template-columns: 1fr 1fr; height: 140px; }
+  .gallery-thumbs-1 { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
