@@ -28,6 +28,10 @@ function badge(status) {
   return { t: 'Bortfestet', cls: 'badge-festet', fg: '#6F6857', bg: '#ECE7DA' };
 }
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// Antall skrevet med bokstaver i brødtekst, så introteksten følger tomter.json.
+const TALLORD = ['null', 'én', 'to', 'tre', 'fire', 'fem', 'seks', 'sju', 'åtte', 'ni', 'ti'];
+const tallord = (n) => TALLORD[n] || String(n);
+const stortForbokstav = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 // Kort «areal · utsikt · sol» — hopper over tomme felt.
 const metaLine = (t) => [areaTxt(t.areal), t.utsikt, t.sol].filter(Boolean).map(esc).join(' · ');
 // Fokuspunkt for cover-beskjæring per bilde (mer himmel). Standard favoriserer toppen.
@@ -183,7 +187,7 @@ function forside() {
     <div class="hero-inner">
       <span class="pill-light">Lifjellet i Lierne</span>
       <h1>Din egen hyttetomt ved Otersjøen</h1>
-      <p>${tomter.length} ryddede tomter på fjellet, med strøm framført. Fiske og bål om sommeren, skiløyper og nordlys om vinteren — fire mil fra svenskegrensen, midt i Blåfjella-Skjækerfjella og Lierne nasjonalparker.</p>
+      <p>${stortForbokstav(tallord(tomter.length))} ryddede solrike tomter på Lifjellet med strøm til tomtegrensa. Fiske og bål om sommeren, skiløyper og nordlys om vinteren — fire mil fra svenskegrensen, midt i Blåfjella-Skjækerfjella og Lierne nasjonalparker.</p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="${L.oversikt}">Se de ledige tomtene →</a>
         <a class="btn btn-glass btn-lg" href="${L.oversikt}">Slik fester du tomt</a>
@@ -297,18 +301,8 @@ function oversikt() {
   <div class="wrap">
     <span class="eyebrow">Felt 4 · Lifjellet</span>
     <h1>Hyttetomter til feste</h1>
-    <p>${sorted.length} tomter på Lifjellet festes bort. ${esc(merknad)} Engangsbeløp ${engangsTxt} og årlig festeavgift ${kr(vilkaar.festeavgift)} for samtlige tomter.</p>
+    <p>${stortForbokstav(tallord(sorted.length))} tomter festes bort. Tomtene er frittliggende med god utsikt mot Blåmuren. Tomtene er lett tilgjengelige fra parkeringsplassen og ligger i et godt etablert og veldrevet hytteområde med frittliggende hytter. Engangsbeløp ${engangsTxt}. Årlig festeavgift ${kr(vilkaar.festeavgift)}.</p>
     <a class="plan-link" href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Reguleringsplan fra Lierne kommune →</a>
-  </div>
-</section>
-
-<section class="feste-info">
-  <div class="wrap">
-    <h2>Nytt med tomtefeste?</h2>
-    <p>Med tomtefeste leier du tomta på en langsiktig kontrakt og eier hytta selv. Vil du sette deg inn i regler og rettigheter, anbefaler vi Huseiernes oversikt:</p>
-    <div class="feste-lenker">
-      ${(lenker.tomtefeste || []).map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.tekst)} →</a>`).join('\n      ')}
-    </div>
   </div>
 </section>
 
@@ -427,7 +421,7 @@ function detalj(t) {
   <div>
     <span class="eyebrow">${esc(sted.felt)}</span>
     <h1>Hyttetomt ${t.nr}</h1>
-    <p class="detalj-lead">${esc(t.terreng)} Festet gir deg en romslig tomt midt i et av Trøndelags fineste turområder. Strøm er framført til feltet — vann og vei er ikke opparbeidet.</p>
+    <p class="detalj-lead">${esc(t.terreng)}</p>
 
     <div class="facts">
       <div class="fact"><div class="k">Areal</div><div class="v tabnum">${areaTxt(t.areal)}</div></div>
