@@ -28,6 +28,10 @@ function badge(status) {
   return { t: 'Bortfestet', cls: 'badge-festet', fg: '#6F6857', bg: '#ECE7DA' };
 }
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// Antall skrevet med bokstaver i brødtekst, så introteksten følger tomter.json.
+const TALLORD = ['null', 'én', 'to', 'tre', 'fire', 'fem', 'seks', 'sju', 'åtte', 'ni', 'ti'];
+const tallord = (n) => TALLORD[n] || String(n);
+const stortForbokstav = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 // Kort «areal · utsikt · sol» — hopper over tomme felt.
 const metaLine = (t) => [areaTxt(t.areal), t.utsikt, t.sol].filter(Boolean).map(esc).join(' · ');
 // Fokuspunkt for cover-beskjæring per bilde (mer himmel). Standard favoriserer toppen.
@@ -183,7 +187,7 @@ function forside() {
     <div class="hero-inner">
       <span class="pill-light">Lifjellet i Lierne</span>
       <h1>Din egen hyttetomt ved Otersjøen</h1>
-      <p>${tomter.length} ryddede tomter på fjellet, med strøm framført. Fiske og bål om sommeren, skiløyper og nordlys om vinteren — fire mil fra svenskegrensen, midt i Blåfjella-Skjækerfjella og Lierne nasjonalparker.</p>
+      <p>${stortForbokstav(tallord(tomter.length))} ryddede solrike tomter på Lifjellet med strøm til tomtegrensa. Fiske og bål om sommeren, skiløyper og nordlys om vinteren — fire mil fra svenskegrensen, midt i Blåfjella-Skjækerfjella og Lierne nasjonalparker.</p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="${L.oversikt}">Se de ledige tomtene →</a>
         <a class="btn btn-glass btn-lg" href="${L.oversikt}">Slik fester du tomt</a>
