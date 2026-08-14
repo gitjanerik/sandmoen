@@ -421,7 +421,7 @@ function detalj(t) {
   <div>
     <span class="eyebrow">${esc(sted.felt)}</span>
     <h1>Hyttetomt ${t.nr}</h1>
-    <p class="detalj-lead">${esc(t.terreng)} Festet gir deg en romslig tomt midt i et av Trøndelags fineste turområder. Strøm er framført til feltet — vann og vei er ikke opparbeidet.</p>
+    <p class="detalj-lead">${esc(t.terreng)}</p>
 
     <div class="facts">
       <div class="fact"><div class="k">Areal</div><div class="v tabnum">${areaTxt(t.areal)}</div></div>
