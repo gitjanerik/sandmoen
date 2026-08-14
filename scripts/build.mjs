@@ -178,7 +178,7 @@ function forside() {
     return areaTxt(Math.min(...a)).replace(' da', '') + '–' + areaTxt(Math.max(...a));
   };
   return head('Sandmoen — Hyttetomter ved Otersjøen i Lierne',
-    `${tomter.length} hyttetomter til feste ved Otersjøen på Lifjellet i Lierne. Strøm framført, engangsbeløp kr 300 000. Fiske, nasjonalpark og skiløyper.`, L)
+    `${tomter.length} hyttetomter til feste ved Otersjøen på Lifjellet i Lierne. Strøm framført, engangsbeløp kr 300 000. Fiske, nasjonalpark, ski og snøskuterturer.`, L)
     + header(L, 'forside')
     + `
 <section class="hero">
@@ -187,7 +187,7 @@ function forside() {
     <div class="hero-inner">
       <span class="pill-light">Lifjellet i Lierne</span>
       <h1>Din egen hyttetomt ved Otersjøen</h1>
-      <p>${stortForbokstav(tallord(tomter.length))} ryddede solrike tomter på Lifjellet med strøm til tomtegrensa. Fiske og bål om sommeren, skiløyper og nordlys om vinteren — fire mil fra svenskegrensen, midt i Blåfjella-Skjækerfjella og Lierne nasjonalparker.</p>
+      <p>${stortForbokstav(tallord(tomter.length))} ryddede solrike tomter på Lifjellet med strøm til tomtegrensa. Fiske og bål om sommeren, ski, snøskuterturer og nordlys om vinteren — fire mil fra svenskegrensen, midt i Blåfjella-Skjækerfjella og Lierne nasjonalparker.</p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="${L.oversikt}">Se de ledige tomtene →</a>
         <a class="btn btn-glass btn-lg" href="${L.oversikt}">Slik fester du tomt</a>
@@ -235,7 +235,7 @@ ${videoModal(L, { video: 'hero-full.mp4', poster: 'hero-full-poster.jpeg', capti
         <span class="tag">Fiske i Otersjøen</span>
         <span class="tag">Nasjonalpark</span>
         <span class="tag">Småviltjakt</span>
-        <span class="tag">Skiløyper &amp; alpint</span>
+        <span class="tag">Ski, snøskuterturer &amp; alpint</span>
       </div>
     </div>
     <div class="om-photo"><div style="background-image:url('${L.asset('tomt7-1.jpeg')}');background-position:${bgpos('tomt7-1.jpeg')}"></div></div>
