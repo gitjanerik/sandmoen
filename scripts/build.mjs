@@ -301,7 +301,7 @@ function oversikt() {
   <div class="wrap">
     <span class="eyebrow">Felt 4 · Lifjellet</span>
     <h1>Hyttetomter til feste</h1>
-    <p>${sorted.length} tomter på Lifjellet festes bort. ${esc(merknad)} Engangsbeløp ${engangsTxt} og årlig festeavgift ${kr(vilkaar.festeavgift)} for samtlige tomter.</p>
+    <p>${stortForbokstav(tallord(sorted.length))} tomter festes bort. Tomtene er frittliggende med god utsikt mot Blåmuren. Tomtene er lett tilgjengelige fra parkeringsplassen og ligger i et godt etablert og veldrevet hytteområde med frittliggende hytter. Engangsbeløp ${engangsTxt}. Årlig festeavgift ${kr(vilkaar.festeavgift)}.</p>
     <a class="plan-link" href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Reguleringsplan fra Lierne kommune →</a>
   </div>
 </section>
