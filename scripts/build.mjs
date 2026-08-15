@@ -302,7 +302,7 @@ function oversikt() {
   <div class="wrap">
     <span class="eyebrow">Felt 4 · Lifjellet</span>
     <h1>Hyttetomter til feste</h1>
-    <p>${stortForbokstav(tallord(sorted.length))} tomter festes bort. Tomtene er frittliggende med god utsikt mot Blåmuren. Tomtene er lett tilgjengelige fra parkeringsplassen og ligger i et godt etablert og veldrevet hytteområde med frittliggende hytter. Engangsbeløp ${engangsTxt}. Årlig festeavgift ${kr(vilkaar.festeavgift)}.</p>
+    <p>${stortForbokstav(tallord(sorted.length))} frittliggende hyttetomter med god utsikt i etablert og veldrevet hyttefelt festes bort. Jakt og fiske, ski, snøskuter og bålpanne om vinteren, fjellturer om sommeren. Utsikt over Lifjellet til Blåmuren. Tomtene er lett tilgjengelige fra parkeringsplass P3 og ligger i et godt etablert og veldrevet hytteområde med frittliggende hytter. Engangsbeløp ${engangsTxt}. Årlig festeavgift ${kr(vilkaar.festeavgift)}.</p>
     <a class="plan-link" href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Reguleringsplan fra Lierne kommune →</a>
   </div>
 </section>
@@ -406,6 +406,11 @@ function detalj(t) {
       + `\n<script src="${L.js('videomodal.js')}"></script>`
     : '';
 
+  // Egen plasseringstekst per tomt der BFR-nummeret ikke følger tomtenummeret.
+  const plasseringTxt = t.plassering
+    ? esc(t.plassering) + ' '
+    : t.bfr ? `I reguleringsplanen er dette <strong>${esc(t.bfr)}</strong>. ` : '';
+
   return head(`Hyttetomt ${t.nr} — Sandmoen`,
     `Hyttetomt ${t.nr} ved Otersjøen — ${areaTxt(t.areal)}, utsikt ${t.utsikt}, ${b.t.toLowerCase()}. Engangsbeløp ${engangsTxt}, festeavgift ${festeTxt}.`, L, `tomt/${t.nr}/`)
     + header(L, 'oversikt')
@@ -437,7 +442,7 @@ function detalj(t) {
     </div>
 
     <h2>Plassering i feltet</h2>
-    <p class="plan-info">${t.bfr ? `I reguleringsplanen er dette <strong>${esc(t.bfr)}</strong>. ` : ''}<a href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Se tomta i reguleringsplanen (kommunekart) →</a></p>
+    <p class="plan-info">${plasseringTxt}<a href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Se tomta i reguleringsplanen (kommunekart) →</a></p>
     <div class="felt-kart">
       <div class="img" style="background-image:url('${L.asset('felt4-kart.png')}')"></div>
       <span class="note">Reguleringskart · Lierne kommune</span>
