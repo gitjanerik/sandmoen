@@ -473,10 +473,13 @@ function detalj(t) {
   <aside class="detalj-aside">
     <div class="k">Engangsbeløp ved feste</div>
     <div class="big tabnum">${engangsTxt}</div>
+    <div class="aside-row"><span>Kommunale gebyrer</span><b class="tabnum">${gebyrTxt}</b></div>
+    <div class="aside-row"><span>Tinglysingsgebyr</span><b class="tabnum">${tinglysingTxt}</b></div>
     <div class="aside-row"><span>Årlig festeavgift</span><b class="tabnum">${festeTxt}</b></div>
+    <p class="aside-note">${esc(vilkaar.indeksTekst)}</p>
     <div class="aside-row"><span>Areal</span><b class="tabnum">${areaTxt(t.areal)}</b></div>
     <div class="aside-row"><span>Status</span><span class="badge ${b.cls}">${b.t}</span></div>
-    <p class="aside-merknad">${esc(merknad)}</p>
+    <p class="aside-merknad">${esc(merknad)} For planbeskrivelse kontakt Lierne kommune.</p>
     <a class="btn btn-sand btn-block" href="${L.kontakt}?tomt=${t.nr}">Kontakt oss om tomt ${t.nr}</a>
   </aside>
 </div>
