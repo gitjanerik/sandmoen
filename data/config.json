@@ -12,7 +12,9 @@
   "vilkaar": {
     "engangsbelop": 300000,
     "festeavgift": 6000,
-    "kommunaleKostnader": 21500
+    "kommunaleKostnader": 21500,
+    "tinglysingsgebyr": 545,
+    "indeksTekst": "Festeavgiften indeksreguleres hvert 5. år i henhold til KPI."
   },
   "merknad": "Strøm er framført til feltet. Vann og vei er ikke opparbeidet.",
   "heroVideoTekst": "Tomt 14 · F4 grense nord · Høst",
@@ -20,8 +22,8 @@
     "Enkel strømtilknytning",
     "Gode jakt- og fiskemuligheter",
     "Godt ski- og jaktterreng",
-    "Kort vei til Lierne kommune sitt løypenett for snøscooter",
-    "Nær Blåfjella-Skjækerfjella og Lierne nasjonalparker"
+    "Kort vei til Lierne kommune sitt løypenett for snøscooter. Det går tilknytningsløype til skuternettet fra gården.",
+    "Nær Blåfjella-Skjækerfjella nasjonalpark og Lierne nasjonalpark."
   ],
   "_fokus_kommentar": "background-position per bilde ved cover-beskjæring. Lavere prosent = mer himmel. Standard er 'center 20%'.",
   "fokus": {

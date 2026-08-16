@@ -22,6 +22,8 @@ const kr = (n) => 'kr ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))
 const areaTxt = (a) => a.toFixed(1).replace('.', ',') + ' da';
 const engangsTxt = kr(vilkaar.engangsbelop);
 const festeTxt = kr(vilkaar.festeavgift) + ' /år';
+const gebyrTxt = kr(vilkaar.kommunaleKostnader);
+const tinglysingTxt = kr(vilkaar.tinglysingsgebyr);
 
 function badge(status) {
   if (status === 'Ledig') return { t: 'Ledig', cls: 'badge-ledig', fg: '#2C6B3F', bg: '#E4EFE3' };
@@ -202,7 +204,7 @@ function forside() {
   <div class="wrap hero-wrap">
     <div class="hero-inner">
       <span class="pill-light">Lifjellet i Lierne</span>
-      <h1>Din egen hyttetomt ved Otersjøen</h1>
+      <h1>Flotte byggeklare tomter på Lifjellet</h1>
       <p>${stortForbokstav(tallord(tomter.length))} ryddede solrike tomter på Lifjellet med strøm til tomtegrensa. Fjelltur, fiske og bål om sommeren, ski og nordlys om vinteren — fire mil fra svenskegrensa, rett ved Blåfjella-Skjækerfjella nasjonalpark.</p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="${L.oversikt}">Se de ledige tomtene →</a>
@@ -220,7 +222,7 @@ ${videoModal(L, { video: 'hero-full.mp4', poster: 'hero-full-poster.jpeg', capti
 
 <section class="stats">
   <div class="wrap">
-    <div><div class="stat-v">${ledige.length}</div><div class="stat-l">ledige tomter nå</div></div>
+    <div><div class="stat-v">${ledige.length}</div><div class="stat-l">ledige tomter</div></div>
     <div><div class="stat-v tabnum">${engangsTxt}</div><div class="stat-l">engangsbeløp ved feste</div></div>
     <div><div class="stat-v">Strøm</div><div class="stat-l">framført til feltet</div></div>
     <div><div class="stat-v">${arealSpenn()}</div><div class="stat-l">romslige tomter</div></div>
@@ -273,7 +275,7 @@ function oversikt() {
     return {
       nr: t.nr, areal: t.areal, arealTxt: areaTxt(t.areal), status: t.status,
       terreng: t.terreng,
-      engangsTxt, festeTxt, href: L.tomt(t.nr),
+      engangsTxt, gebyrTxt, tinglysingTxt, festeTxt, href: L.tomt(t.nr),
       badgeT: b.t, badgeCls: b.cls,
       hasFoto: !!(t.bilder && t.bilder.length),
       heroUrl: (t.bilder && t.bilder.length) ? L.asset(t.bilder[0]) : '',
@@ -308,7 +310,7 @@ function oversikt() {
 <section class="top-green">
   <div class="wrap">
     <span class="eyebrow">Felt 4 · Lifjellet</span>
-    <h1>Hyttetomter til feste</h1>
+    <h1>Ledige hyttetomter</h1>
     <p>${stortForbokstav(tallord(sorted.length))} frittliggende hyttetomter med god utsikt til Båsdalsfjellet, Blåmuren og Havdalsfjellet. Tomtene ligger i et etablert og veldrevet hyttefelt med egen hytteforening. Tomtene er lett tilgjengelige fra parkeringsplassene P3 og P4. På P4 er det i dag fire elbilladere tilgjengelig for hytteeiere.</p>
     <p>Engangsbeløp ${engangsTxt}. Årlig festeavgift ${kr(vilkaar.festeavgift)}. Kommunale kostnader ${kr(vilkaar.kommunaleKostnader)} — dette dekker saksbehandlingsgebyr knyttet til oppmåling og fradeling, jf. gjeldende gebyrregulativ for Lierne kommune. Det vil også være oppkoblingskostnader for påkobling til strømnettet; for mer info kontakt Tensio.</p>
     <div class="top-green-lenker">
@@ -321,9 +323,8 @@ function oversikt() {
 <section class="section-sand" id="feste">
   <div class="wrap feste-blokk">
     <h2>Slik fester du tomt</h2>
-    <p>Har du funnet en hyttetomt inngår vi en standardisert festekontrakt. Festekontrakten inngås mellom grunneier ${esc(kontakt.navn)} (bortfester) og du/dere (fester/e) som ønsker å oppføre en fritidsbolig. Festekontrakten tinglyses og tomta får et festenummer i matrikkelen.</p>
-    <p>I dag gjelder festeforholdet til det sies opp av festeren. Ønsker du å selge hytta, overføres festeforholdet og vilkårene i festekontrakten til kjøper. Med mindre annet er spesifisert i festekontrakten, har du samme råderett over tomta som om det var en grunneiendom med gårds- og bruksnummer.</p>
-    <p>Når jeg ønsker å opprette festeforhold framfor å selge en tomt, er det fordi festeforholdet fordeler tomteinntektene over tid. Slik sett er festeforholdet en betalingsordning som kommer framtidige grunneiere til nytte.</p>
+    <p>Har du funnet en hyttetomt inngår vi en standardisert festekontrakt. Festekontrakten inngås mellom grunneier ${esc(kontakt.navn)} (bortfester) og du/dere (fester/e) som ønsker å oppføre en fritidsbolig. Tomta gis et festenummer i matrikkelen etter at kommunen har gjennomført oppmåling i henhold til reguleringsplanen og foretatt en fradeling.</p>
+    <p>Ønsker du å selge hytta, overføres festeforholdet og vilkårene i festekontrakten til kjøper. Når jeg ønsker å opprette festeforhold framfor å selge en tomt, er det fordi festeforholdet fordeler tomteinntektene over tid. Slik sett er festeforholdet en betalingsordning som kommer framtidige grunneiere til gode.</p>
     <a class="feste-lenke" href="${esc(lenker.tomtefesteloven)}" target="_blank" rel="noopener">Se også tomtefesteloven på lovdata.no →</a>
   </div>
 </section>
@@ -352,7 +353,8 @@ function oversikt() {
       <table>
         <thead><tr>
           <th>Tomt</th><th>Areal</th>
-          <th class="num">Engangsbeløp</th><th class="num">Festeavgift</th><th>Status</th><th></th>
+          <th class="num">Engangsbeløp</th><th class="num">Kommunalt gebyr</th>
+          <th class="num">Tinglysingsgebyr</th><th class="num">Festeavgift</th><th>Status</th><th></th>
         </tr></thead>
         <tbody id="liste-body"></tbody>
       </table>
@@ -456,7 +458,7 @@ function detalj(t) {
 
     <h2>Dette følger med</h2>
     <div class="includes">
-      ${folgerMed.map((x) => `<div><span class="dot"></span>${esc(x)}</div>`).join('\n      ')}
+      ${folgerMed.map((x, i) => `<div><span class="dot"></span>${esc(i === 0 && t.strom ? t.strom : x)}</div>`).join('\n      ')}
     </div>
     <p class="plan-info">For mer info om nasjonalparken se <a href="${esc(lenker.nasjonalpark)}" target="_blank" rel="noopener">norgesnasjonalparker.no →</a></p>
 

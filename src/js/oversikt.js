@@ -30,6 +30,8 @@
       <td class="tomt">Tomt ${t.nr}</td>
       <td class="tabnum">${t.arealTxt}</td>
       <td class="num price tabnum">${t.engangsTxt}</td>
+      <td class="num tabnum">${t.gebyrTxt}</td>
+      <td class="num tabnum">${t.tinglysingTxt}</td>
       <td class="num tabnum">${t.festeTxt}</td>
       <td><span class="badge ${t.badgeCls}">${t.badgeT}</span></td>
       <td class="go"><a href="${t.href}">Se tomt →</a></td>
