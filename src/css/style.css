@@ -272,6 +272,10 @@ main { flex: 1; }
 .top-green .eyebrow { color: var(--on-green-eyebrow); }
 .top-green h1 { font: 600 44px/1.06 var(--font-display); margin: 8px 0 14px; color: #fff; }
 .top-green p { font-size: 16.5px; line-height: 1.6; color: var(--on-green-muted-2); max-width: 680px; margin: 0; }
+.top-green p + p { margin-top: 13px; }
+.top-green-h2 { font: 600 24px/1.2 var(--font-display); margin: 0 0 12px; color: #fff; }
+.top-green-lenker { display: flex; flex-wrap: wrap; gap: 12px; }
+.top-green-lenker .plan-link { margin-top: 22px; }
 .plan-link {
   display: inline-flex; align-items: center; gap: 9px; margin-top: 20px;
   background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.42);

@@ -302,8 +302,14 @@ function oversikt() {
   <div class="wrap">
     <span class="eyebrow">Felt 4 · Lifjellet</span>
     <h1>Hyttetomter til feste</h1>
-    <p>${stortForbokstav(tallord(sorted.length))} frittliggende hyttetomter med god utsikt i etablert og veldrevet hyttefelt festes bort. Jakt og fiske, ski, snøskuter og bålpanne om vinteren, fjellturer om sommeren. Utsikt over Lifjellet til Blåmuren. Tomtene er lett tilgjengelige fra parkeringsplass P3 og ligger i et godt etablert og veldrevet hytteområde med frittliggende hytter. Engangsbeløp ${engangsTxt}. Årlig festeavgift ${kr(vilkaar.festeavgift)}.</p>
-    <a class="plan-link" href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Reguleringsplan fra Lierne kommune →</a>
+    <h2 class="top-green-h2">Slik fester du tomt</h2>
+    <p>Har du funnet en hyttetomt inngår vi en standardisert festekontrakt. Festekontrakten inngås mellom grunneier (bortfester) og hyttebygger (fester). Festekontrakten tinglyses og tomta får et festenummer i matrikkelen.</p>
+    <p>I dag gjelder festeforholdet til det sies opp av festeren. Ønsker du å selge hytta overføres festeforholdet og vilkårene i festekontrakten til kjøper. Med mindre annet er spesifisert i festekontrakten, har du samme råderett over tomta som om det var en grunneiendom med gårds- og bruksnummer.</p>
+    <p>Når jeg som grunneier ønsker å opprette festeforhold framfor å selge en tomt, er det fordi festeforholdet fordeler tomteinntektene over tid. Slik sett er festeforholdet en betalingsordning som kommer framtidige grunneiere til nytte, samtidig som fester betaler en lavere engangssum.</p>
+    <div class="top-green-lenker">
+      <a class="plan-link" href="https://lovdata.no/dokument/NL/lov/1996-12-20-106" target="_blank" rel="noopener">Tomtefesteloven på lovdata.no →</a>
+      <a class="plan-link" href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Reguleringsplan fra Lierne kommune →</a>
+    </div>
   </div>
 </section>
 
