@@ -43,6 +43,7 @@
   "lenker": {
     "reguleringsplan": "https://kommunekart.com/klient/IndreNamdal?urlid=98245ea4-4583-4aa0-9a64-fff3153b4252",
     "tomtefesteloven": "https://lovdata.no/dokument/NL/lov/1996-12-20-106",
-    "nasjonalpark": "https://www.norgesnasjonalparker.no/nasjonalparker/blafjella-skjakerfjella/"
+    "nasjonalpark": "https://www.norgesnasjonalparker.no/nasjonalparker/blafjella-skjakerfjella/",
+    "reguleringsbestemmelser": "https://arealplaner.no/lierne5042/arealplaner/66?knr=5042&gnr=6&bnr=7"
   }
 }
