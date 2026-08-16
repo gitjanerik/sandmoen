@@ -1,7 +1,7 @@
 // Oversiktsside: filter, sortering og veksling kort/liste. Data i window.__TOMTER__.
 (() => {
   const data = window.__TOMTER__ || [];
-  const state = { status: 'alle', utsikt: 'alle', sort: 'nr', view: 'kort' };
+  const state = { status: 'alle', sort: 'nr', view: 'kort' };
 
   const $ = (id) => document.getElementById(id);
   const kortGrid = $('kort-grid');
@@ -15,14 +15,12 @@
     ? `<div class="photo" style="background-image:url('${t.heroUrl}');background-position:${t.heroPos}"></div>`
     : placeholder();
 
-  const meta = (t) => [t.arealTxt, t.utsikt, t.sol].filter(Boolean).join(' · ');
-
   const card = (t) => `<a class="tomt-card" href="${t.href}">
       <div class="media">${photo(t)}<div class="shade"></div>
         <span class="badge ${t.badgeCls}">${t.badgeT}</span>
         <span class="nr">Tomt ${t.nr}</span></div>
       <div class="body">
-        <div class="meta">${meta(t)}</div>
+        <div class="meta">${t.arealTxt}</div>
         <div class="price tabnum">${t.engangsTxt}</div>
         <div class="feste tabnum">+ festeavgift ${t.festeTxt}</div>
         <div class="terreng">${t.terreng}</div>
@@ -31,7 +29,6 @@
   const row = (t) => `<tr onclick="location.href='${t.href}'">
       <td class="tomt">Tomt ${t.nr}</td>
       <td class="tabnum">${t.arealTxt}</td>
-      <td>${t.utsikt}</td>
       <td class="num price tabnum">${t.engangsTxt}</td>
       <td class="num tabnum">${t.festeTxt}</td>
       <td><span class="badge ${t.badgeCls}">${t.badgeT}</span></td>
@@ -41,7 +38,6 @@
   function filtered() {
     let r = data.slice();
     if (state.status !== 'alle') r = r.filter((t) => t.status === state.status);
-    if (state.utsikt !== 'alle') r = r.filter((t) => t.utsikt.indexOf(state.utsikt) >= 0);
     if (state.sort === 'nr') r.sort((a, b) => a.nr - b.nr);
     else if (state.sort === 'areal') r.sort((a, b) => b.areal - a.areal);
     else if (state.sort === 'status') r.sort((a, b) => a.status.localeCompare(b.status, 'nb'));
@@ -65,7 +61,6 @@
 
   const on = (id, fn) => { const el = $(id); if (el) el.addEventListener('change', fn); };
   on('f-status', (e) => { state.status = e.target.value; render(); });
-  on('f-utsikt', (e) => { state.utsikt = e.target.value; render(); });
   on('f-sort', (e) => { state.sort = e.target.value; render(); });
   document.querySelectorAll('.viewtoggle button').forEach((b) =>
     b.addEventListener('click', () => setView(b.dataset.view)));

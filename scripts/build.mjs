@@ -32,8 +32,7 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const TALLORD = ['null', 'én', 'to', 'tre', 'fire', 'fem', 'seks', 'sju', 'åtte', 'ni', 'ti'];
 const tallord = (n) => TALLORD[n] || String(n);
 const stortForbokstav = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-// Kort «areal · utsikt · sol» — hopper over tomme felt.
-const metaLine = (t) => [areaTxt(t.areal), t.utsikt, t.sol].filter(Boolean).map(esc).join(' · ');
+const metaLine = (t) => esc(areaTxt(t.areal));
 // Fokuspunkt for cover-beskjæring per bilde (mer himmel). Standard favoriserer toppen.
 const fokus = config.fokus || {};
 const bgpos = (file) => fokus[file] || 'center 20%';
@@ -133,9 +132,8 @@ function header(L, current) {
       <span class="nav-links">
         <a href="${L.oversikt}"${cur('oversikt')}>Hyttetomter</a>
         <a href="${L.home}#om">Om Sandmoen</a>
-        <a href="${L.kontakt}"${cur('kontakt')}>Kontakt</a>
+        <a href="${L.kontakt}"${cur('kontakt')}>Kontakt oss</a>
       </span>
-      <a class="btn btn-primary" href="${L.kontakt}">Meld interesse</a>
     </nav>
   </div>
 </header>
@@ -154,7 +152,7 @@ function footer(L) {
       <h4>Tomtene</h4>
       <a href="${L.oversikt}">Alle hyttetomter</a>
       <a href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Kart over feltet</a>
-      <a href="${L.kontakt}">Meld interesse</a>
+      <a href="${L.kontakt}">Kontakt oss</a>
     </div>
     <div class="footer-col">
       <h4>Kontakt</h4>
@@ -187,7 +185,7 @@ function forside() {
     <div class="hero-inner">
       <span class="pill-light">Lifjellet i Lierne</span>
       <h1>Din egen hyttetomt ved Otersjøen</h1>
-      <p>${stortForbokstav(tallord(tomter.length))} ryddede solrike tomter på Lifjellet med strøm til tomtegrensa. Fiske og bål om sommeren, ski og nordlys om vinteren — fire mil fra svenskegrensen, midt i Blåfjella-Skjækerfjella og Lierne nasjonalparker.</p>
+      <p>${stortForbokstav(tallord(tomter.length))} ryddede solrike tomter på Lifjellet med strøm til tomtegrensa. Fjelltur, fiske og bål om sommeren, ski og nordlys om vinteren — fire mil fra svenskegrensa, rett ved Blåfjella-Skjækerfjella nasjonalpark.</p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="${L.oversikt}">Se de ledige tomtene →</a>
         <a class="btn btn-glass btn-lg" href="${L.oversikt}">Slik fester du tomt</a>
@@ -256,7 +254,7 @@ function oversikt() {
     const b = badge(t.status);
     return {
       nr: t.nr, areal: t.areal, arealTxt: areaTxt(t.areal), status: t.status,
-      utsikt: t.utsikt, sol: t.sol, terreng: t.terreng,
+      terreng: t.terreng,
       engangsTxt, festeTxt, href: L.tomt(t.nr),
       badgeT: b.t, badgeCls: b.cls,
       hasFoto: !!(t.bilder && t.bilder.length),
@@ -267,22 +265,13 @@ function oversikt() {
 
   // Filtre vises kun når dataene gjør dem meningsfulle.
   const statuser = [...new Set(sorted.map((t) => t.status))];
-  const utsikter = [...new Set(sorted.map((t) => t.utsikt).filter(Boolean))];
   const visStatus = statuser.length >= 2;
-  const visUtsikt = utsikter.length >= 2;
 
   const statusField = visStatus ? `<div class="field">
         <label for="f-status">Status</label>
         <select id="f-status">
           <option value="alle">Alle statuser</option>
           ${statuser.map((s) => `<option value="${esc(s)}">${badge(s).t}</option>`).join('\n          ')}
-        </select>
-      </div>` : '';
-  const utsiktField = visUtsikt ? `<div class="field">
-        <label for="f-utsikt">Utsikt</label>
-        <select id="f-utsikt">
-          <option value="alle">All utsikt</option>
-          ${utsikter.map((u) => `<option value="${esc(u)}">${esc(u)}</option>`).join('\n          ')}
         </select>
       </div>` : '';
   const sortField = `<div class="field">
@@ -295,28 +284,35 @@ function oversikt() {
       </div>`;
 
   return head('Hyttetomter til feste — Sandmoen',
-    `Se alle ${sorted.length} hyttetomtene i Felt 4 på Lifjellet — areal, utsikt og festevilkår. Kort og liste.`, L, 'tomter/')
+    `Se alle ${sorted.length} hyttetomtene i Felt 4 på Lifjellet — areal, festevilkår og hvordan festekontrakten fungerer.`, L, 'tomter/')
     + header(L, 'oversikt')
     + `
 <section class="top-green">
   <div class="wrap">
     <span class="eyebrow">Felt 4 · Lifjellet</span>
     <h1>Hyttetomter til feste</h1>
-    <h2 class="top-green-h2">Slik fester du tomt</h2>
-    <p>Har du funnet en hyttetomt inngår vi en standardisert festekontrakt. Festekontrakten inngås mellom grunneier (bortfester) og hyttebygger (fester). Festekontrakten tinglyses og tomta får et festenummer i matrikkelen.</p>
-    <p>I dag gjelder festeforholdet til det sies opp av festeren. Ønsker du å selge hytta overføres festeforholdet og vilkårene i festekontrakten til kjøper. Med mindre annet er spesifisert i festekontrakten, har du samme råderett over tomta som om det var en grunneiendom med gårds- og bruksnummer.</p>
-    <p>Når jeg som grunneier ønsker å opprette festeforhold framfor å selge en tomt, er det fordi festeforholdet fordeler tomteinntektene over tid. Slik sett er festeforholdet en betalingsordning som kommer framtidige grunneiere til nytte, samtidig som fester betaler en lavere engangssum.</p>
+    <p>${stortForbokstav(tallord(sorted.length))} frittliggende hyttetomter med god utsikt til Båsdalsfjellet, Blåmuren og Havdalsfjellet. Tomtene ligger i et etablert og veldrevet hyttefelt med egen hytteforening. Tomtene er lett tilgjengelige fra parkeringsplassene P3 og P4. På P4 er det i dag fire elbilladere tilgjengelig for hytteeiere.</p>
+    <p>Engangsbeløp ${engangsTxt}. Årlig festeavgift ${kr(vilkaar.festeavgift)}. Kommunale kostnader ${kr(vilkaar.kommunaleKostnader)} — dette dekker saksbehandlingsgebyr knyttet til oppmåling og fradeling, jf. gjeldende gebyrregulativ for Lierne kommune. Det vil også være oppkoblingskostnader for påkobling til strømnettet; for mer info kontakt Tensio.</p>
     <div class="top-green-lenker">
-      <a class="plan-link" href="https://lovdata.no/dokument/NL/lov/1996-12-20-106" target="_blank" rel="noopener">Tomtefesteloven på lovdata.no →</a>
+      <a class="plan-link" href="${esc(lenker.nasjonalpark)}" target="_blank" rel="noopener">Om landskapet og nasjonalparken →</a>
       <a class="plan-link" href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Reguleringsplan fra Lierne kommune →</a>
     </div>
+  </div>
+</section>
+
+<section class="section-sand">
+  <div class="wrap feste-blokk">
+    <h2>Slik fester du tomt</h2>
+    <p>Har du funnet en hyttetomt inngår vi en standardisert festekontrakt. Festekontrakten inngås mellom grunneier ${esc(kontakt.navn)} (bortfester) og du/dere (fester/e) som ønsker å oppføre en fritidsbolig. Festekontrakten tinglyses og tomta får et festenummer i matrikkelen.</p>
+    <p>I dag gjelder festeforholdet til det sies opp av festeren. Ønsker du å selge hytta, overføres festeforholdet og vilkårene i festekontrakten til kjøper. Med mindre annet er spesifisert i festekontrakten, har du samme råderett over tomta som om det var en grunneiendom med gårds- og bruksnummer.</p>
+    <p>Når jeg ønsker å opprette festeforhold framfor å selge en tomt, er det fordi festeforholdet fordeler tomteinntektene over tid. Slik sett er festeforholdet en betalingsordning som kommer framtidige grunneiere til nytte.</p>
+    <a class="feste-lenke" href="${esc(lenker.tomtefesteloven)}" target="_blank" rel="noopener">Se også tomtefesteloven på lovdata.no →</a>
   </div>
 </section>
 
 <div class="wrap" style="padding-top:26px;padding-bottom:80px">
   <div class="toolbar">
       ${statusField}
-      ${utsiktField}
       ${sortField}
     <div class="toolbar-right">
       <span class="count"><b class="tabnum" id="count">${sorted.length}</b> tomter</span>
@@ -337,7 +333,7 @@ function oversikt() {
     <div class="table-wrap">
       <table>
         <thead><tr>
-          <th>Tomt</th><th>Areal</th><th>Utsikt</th>
+          <th>Tomt</th><th>Areal</th>
           <th class="num">Engangsbeløp</th><th class="num">Festeavgift</th><th>Status</th><th></th>
         </tr></thead>
         <tbody id="liste-body"></tbody>
@@ -391,7 +387,7 @@ function detalj(t) {
         <span class="foto-txt">Bilder kommer</span>
       </div>
       <div class="ph-col">
-        <div class="ph-tile utsikt"><svg viewBox="0 0 400 200" preserveAspectRatio="none"><rect x="0" y="120" width="400" height="80" fill="rgba(255,255,255,.08)"/><path d="M0 120 L100 96 L200 118 L300 92 L400 116 L400 200 L0 200 Z" fill="rgba(0,0,0,.15)"/></svg><span>Utsikt mot ${esc(t.utsikt)}</span></div>
+        <div class="ph-tile utsikt"><svg viewBox="0 0 400 200" preserveAspectRatio="none"><rect x="0" y="120" width="400" height="80" fill="rgba(255,255,255,.08)"/><path d="M0 120 L100 96 L200 118 L300 92 L400 116 L400 200 L0 200 Z" fill="rgba(0,0,0,.15)"/></svg><span>Utsikt fra tomta</span></div>
         <div class="ph-tile terreng"><svg viewBox="0 0 400 200" preserveAspectRatio="none"><path d="M0 140 L80 110 L160 136 L240 104 L320 134 L400 110 L400 200 L0 200 Z" fill="rgba(0,0,0,.14)"/></svg><span>Terreng på tomta</span></div>
       </div>
     </div>`;
@@ -418,7 +414,7 @@ function detalj(t) {
     : t.bfr ? `I reguleringsplanen er dette <strong>${esc(t.bfr)}</strong>. ` : '';
 
   return head(`Hyttetomt ${t.nr} — Sandmoen`,
-    `Hyttetomt ${t.nr} ved Otersjøen — ${areaTxt(t.areal)}, utsikt ${t.utsikt}, ${b.t.toLowerCase()}. Engangsbeløp ${engangsTxt}, festeavgift ${festeTxt}.`, L, `tomt/${t.nr}/`)
+    `Hyttetomt ${t.nr} ved Otersjøen på Lifjellet — ${areaTxt(t.areal)}, ${b.t.toLowerCase()}. Engangsbeløp ${engangsTxt}, festeavgift ${festeTxt}.`, L, `tomt/${t.nr}/`)
     + header(L, 'oversikt')
     + `
 <div class="wrap" style="padding-top:24px;padding-bottom:14px">
@@ -437,8 +433,6 @@ function detalj(t) {
 
     <div class="facts">
       <div class="fact"><div class="k">Areal</div><div class="v tabnum">${areaTxt(t.areal)}</div></div>
-      <div class="fact"><div class="k">Utsikt</div><div class="v">${esc(t.utsikt) || 'Kommer'}</div></div>
-      <div class="fact"><div class="k">Solforhold</div><div class="v">${esc(t.sol) || 'Kommer'}</div></div>
       <div class="fact"><div class="k">Status</div><div class="v">${b.t}</div></div>
     </div>
 
@@ -446,6 +440,7 @@ function detalj(t) {
     <div class="includes">
       ${folgerMed.map((x) => `<div><span class="dot"></span>${esc(x)}</div>`).join('\n      ')}
     </div>
+    <p class="plan-info">For mer info om nasjonalparken se <a href="${esc(lenker.nasjonalpark)}" target="_blank" rel="noopener">norgesnasjonalparker.no →</a></p>
 
     <h2>Plassering i feltet</h2>
     <p class="plan-info">${plasseringTxt}<a href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Se tomta i reguleringsplanen (kommunekart) →</a></p>
@@ -462,8 +457,7 @@ function detalj(t) {
     <div class="aside-row"><span>Areal</span><b class="tabnum">${areaTxt(t.areal)}</b></div>
     <div class="aside-row"><span>Status</span><span class="badge ${b.cls}">${b.t}</span></div>
     <p class="aside-merknad">${esc(merknad)}</p>
-    <a class="btn btn-primary btn-block" href="${L.kontakt}?tomt=${t.nr}">Meld interesse for tomt ${t.nr}</a>
-    <a class="btn btn-sand btn-block" href="${L.kontakt}">Still et spørsmål</a>
+    <a class="btn btn-sand btn-block" href="${L.kontakt}?tomt=${t.nr}">Kontakt oss om tomt ${t.nr}</a>
   </aside>
 </div>
 
@@ -473,7 +467,7 @@ function detalj(t) {
     <div class="andre-grid">
       ${andre.map((x) => `<a class="andre-card" href="${L.tomt(x.nr)}">
         <span class="mark">${x.nr}</span>
-        <span class="info"><b>Tomt ${x.nr}</b><span>${areaTxt(x.areal)} · ${esc(x.utsikt)}</span><span class="price tabnum">${engangsTxt}</span></span>
+        <span class="info"><b>Tomt ${x.nr}</b><span>${areaTxt(x.areal)}</span><span class="price tabnum">${engangsTxt}</span></span>
       </a>`).join('\n      ')}
     </div>
   </div>
@@ -487,14 +481,14 @@ ${videoBlock}
 /* ---------- Kontakt ---------- */
 function kontaktside() {
   const L = links(1);
-  return head('Kontakt & meld interesse — Sandmoen',
-    'Meld interesse for en hyttetomt ved Otersjøen. Kontakt Frode Skjelbred på 472 774 42 eller post@sandmoen.com.', L, 'kontakt/')
+  return head('Kontakt oss — Sandmoen',
+    `Kontakt oss om hyttetomtene ved Otersjøen. ${kontakt.navn} · ${kontakt.telefon} · ${kontakt.epost}.`, L, 'kontakt/')
     + header(L, 'kontakt')
     + `
 <section class="top-green">
   <div class="wrap">
     <span class="eyebrow">Kontakt &amp; interesse</span>
-    <h1>Meld interesse for en tomt</h1>
+    <h1>Kontakt oss om en tomt</h1>
     <p>Fyll ut skjemaet, så tar vi kontakt og avtaler en visning. Det er helt uforpliktende. Du kan også ringe oss direkte.</p>
   </div>
 </section>

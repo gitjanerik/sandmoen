@@ -57,10 +57,6 @@ def skriv_hode(ws, rad, overskrifter, hoyde=34):
 def mangler(vare):
     """Felt som står tomme eller er plassholdertekst på nettsiden i dag."""
     ut = []
-    if not vare.get("utsikt"):
-        ut.append("utsikt")
-    if not vare.get("sol"):
-        ut.append("sol")
     if not vare.get("terreng") or vare["terreng"] == PLASSHOLDER:
         ut.append("terreng")
     return ut
@@ -69,10 +65,8 @@ def mangler(vare):
 def mangler_formel(rad):
     """Liste over manglende felt, satt sammen med & og IF så den virker i enhver Excel-versjon."""
     deler = (
-        f'IF($E{rad}="","Utsikt · ","")'
-        f'&IF($F{rad}="","Solforhold · ","")'
-        f'&IF(OR($G{rad}="",$G{rad}="{PLASSHOLDER}"),"Beskrivelse · ","")'
-        f'&IF($I{rad}=0,"Bilder · ","")'
+        f'IF(OR($E{rad}="",$E{rad}="{PLASSHOLDER}"),"Beskrivelse · ","")'
+        f'&IF($G{rad}=0,"Bilder · ","")'
     )
     return f'=IF(LEN({deler})=0,"Komplett",LEFT({deler},LEN({deler})-3))'
 
@@ -87,8 +81,6 @@ KOLONNER = [
     ("BFR i\nreguleringsplan", 14),
     ("Status", 12),
     ("Areal\n(dekar)", 9),
-    ("Utsikt", 20),
-    ("Solforhold", 18),
     ("Beskrivelse av tomta\n(ingress øverst på tomtesiden)", 52),
     ("Plassering i feltet\n(tekst over reguleringskartet)", 42),
     ("Bilder\n(antall)", 9),
@@ -109,7 +101,7 @@ ws["A2"] = (
     "Se arket «Veiledning» for hva hvert felt styrer."
 )
 ws["A2"].font = dempet
-ws.merge_cells("A2:P2")
+ws.merge_cells("A2:N2")
 ws.row_dimensions[2].height = 30
 ws["A2"].alignment = topp
 
@@ -124,11 +116,9 @@ for t in tomter:
         t.get("bfr", ""),
         t["status"],
         t["areal"],
-        t.get("utsikt", ""),
-        t.get("sol", ""),
         t.get("terreng", ""),
         t.get("plassering", ""),
-        f'=COUNTIFS(Bilder!$A$5:$A$400,$A{rad},Bilder!$B$5:$B$400,"Bilde")',
+        f'=COUNTIFS(Bilder!$A$5:$A$400,$A{rad},Bilder!$B$5:$B$400,"Bilde")',  # kolonne G
         "Ja" if t.get("video") else "Nei",
         t.get("videoTekst", ""),
         t.get("x", ""),
@@ -140,14 +130,13 @@ for t in tomter:
     for i, v in enumerate(verdier, start=1):
         c = ws.cell(row=rad, column=i, value=v)
         c.font, c.alignment, c.border = b_font, topp, kant
-        if i in (1, 3, 4, 9, 10, 12, 13, 16):
+        if i in (1, 3, 4, 7, 8, 10, 11, 14):
             c.alignment = topp_midt
     ws.cell(row=rad, column=4).number_format = "0.0"
-    for kol, felt in ((5, "utsikt"), (6, "sol"), (7, "terreng")):
-        if felt in m:
-            ws.cell(row=rad, column=kol).fill = b_fill
-    ws.cell(row=rad, column=15).fill = b_fill
-    ws.cell(row=rad, column=16).fill = b_fill
+    if "terreng" in m:
+        ws.cell(row=rad, column=5).fill = b_fill
+    ws.cell(row=rad, column=13).fill = b_fill
+    ws.cell(row=rad, column=14).fill = b_fill
     ws.row_dimensions[rad].height = 118
     rad += 1
 
@@ -156,7 +145,7 @@ ws.cell(row=rad + 1, column=1, value="Eksempel på utfylling – ikke en ekte to
 ws.merge_cells(start_row=rad + 1, start_column=1, end_row=rad + 1, end_column=8)
 eks_rad = rad + 2
 eksempel = [
-    99, "BFR99", "Ledig", 1.1, "Otersjøen og Blåmuren", "Kveldssol",
+    99, "BFR99", "Ledig", 1.1,
     "Slak, tørr furumo med fjell i dagen mot vest. Bilvei fram til P3, derfra ca 80 meter på opparbeidet sti.",
     "Ligger mellom BFR 17 og BFR 18, merket bBF i reguleringskartet.",
     0, "Nei", "", 50, 50, "", "Tar nye bilder til høsten.", "Ja",
@@ -165,15 +154,15 @@ for i, v in enumerate(eksempel, start=1):
     c = ws.cell(row=eks_rad, column=i, value=v)
     c.font, c.alignment, c.border = dempet, topp, kant
     c.fill = sand_fill
-    if i in (1, 3, 4, 9, 10, 12, 13, 16):
+    if i in (1, 3, 4, 7, 8, 10, 11, 14):
         c.alignment = topp_midt
 ws.cell(row=eks_rad, column=4).number_format = "0.0"
-ws.cell(row=eks_rad, column=9).value = 0
+ws.cell(row=eks_rad, column=7).value = 0
 ws.row_dimensions[eks_rad].height = 76
 
-ws.cell(row=4, column=14).comment = Comment(
+ws.cell(row=4, column=12).comment = Comment(
     "Regnes ut automatisk fra kolonnene til venstre. «Komplett» betyr at "
-    "utsikt, solforhold, beskrivelse og minst ett bilde er på plass.",
+    "beskrivelse og minst ett bilde er på plass.",
     "Sandmoen",
 )
 
@@ -182,10 +171,10 @@ dv_janei = DataValidation(type="list", formula1='"Ja,Nei"', allow_blank=True)
 ws.add_data_validation(dv_status)
 ws.add_data_validation(dv_janei)
 dv_status.add(f"C5:C{siste}")
-dv_janei.add(f"P5:P{siste}")
+dv_janei.add(f"N5:N{siste}")
 
 ws.freeze_panes = "B5"
-ws.auto_filter.ref = f"A4:P{siste}"
+ws.auto_filter.ref = f"A4:N{siste}"
 ws.sheet_view.zoomScale = 90
 
 # ---------------------------------------------------------------- Bilder
@@ -263,6 +252,7 @@ sted = config["sted"]
 felles = [
     ("Engangsbeløp ved feste", vilkaar["engangsbelop"], "Forside, oversikt, hver tomteside, kontakt"),
     ("Årlig festeavgift", vilkaar["festeavgift"], "Forside, oversikt, hver tomteside, kontakt"),
+    ("Kommunale kostnader", vilkaar["kommunaleKostnader"], "Oversikten («Hyttetomter til feste»)"),
     ("Merknad om vann, vei og strøm", config["merknad"], "Oversikt, hver tomteside, kontakt"),
 ]
 for i, punkt in enumerate(config["folgerMed"], start=1):
@@ -275,7 +265,9 @@ felles += [
     ("Kontaktperson", kontakt["navn"], "Bunntekst og kontaktsiden"),
     ("Telefon", kontakt["telefon"], "Bunntekst og kontaktsiden"),
     ("E-post", kontakt["epost"], "Bunntekst og kontaktsiden"),
-    ("Lenke til reguleringsplanen", config["lenker"]["reguleringsplan"], "Hver tomteside"),
+    ("Lenke til reguleringsplanen", config["lenker"]["reguleringsplan"], "Oversikten og hver tomteside"),
+    ("Lenke til tomtefesteloven", config["lenker"]["tomtefesteloven"], "«Slik fester du tomt» på oversikten"),
+    ("Lenke om nasjonalparken", config["lenker"]["nasjonalpark"], "Oversikten og hver tomteside"),
 ]
 
 rf = 5
@@ -334,15 +326,13 @@ forklaringer = [
     ("BFR i reguleringsplan", "Betegnelsen i reguleringsplanen. Følger tomtenummeret på alle tomtene i dag.", "Avsnittet «Plassering i feltet»"),
     ("Status", "Ledig, Reservert eller Festet. «Festet» vises som «Bortfestet» på nettsiden.", "Merke på kort, tomteside og i filteret"),
     ("Areal", "Størrelse i dekar, én desimal (1,0 da).", "Kort, faktaboks og prispanel"),
-    ("Utsikt", "Kort stikkord, f.eks. «Blåmuren» eller «Nord og øst». Brukes også som filtervalg i oversikten.", "Faktaboks og filter"),
-    ("Solforhold", "Kort stikkord, f.eks. «Kveldssol» eller «Sol hele dagen». Står tomt på alle tomtene i dag og vises som «Kommer».", "Faktaboks"),
     ("Beskrivelse av tomta", "Ingressen øverst på tomtesiden, og teksten på kortet i oversikten. To–fire setninger om terreng, adkomst, strøm og hva som gjør tomta spesiell.", "Tomtesiden og oversiktskortet"),
     ("Plassering i feltet", "Setningen over reguleringskartet, som forklarer hvor tomta ligger i forhold til naboene. Står den tom, skrives «I reguleringsplanen er dette BFR N» automatisk.", "Tomtesiden"),
     ("Bilder", "Antall bilder på tomta. Detaljene ligger på arket «Bilder».", "Galleri på tomtesiden"),
     ("Video", "Om tomta har video. Alle fem har sommervideo fra 2026.", "Knappen «Se video fra tomta»"),
     ("Tekst under videoen", "Valgfri bildetekst i videovinduet, f.eks. «Tomt 14 · F4 grense nord · Høst».", "Videovinduet"),
     ("Kart X og Y", "Hvor tomtenålen står i kartvisningen i oversikten, målt i prosent av bredde og høyde. Bare relevant hvis nålen står feil.", "Kartvisningen i oversikten"),
-    ("Mangler på nettsiden i dag", "Regnes ut automatisk. «Komplett» betyr at utsikt, solforhold, beskrivelse og bilder er på plass.", "Vises ikke på nettsiden"),
+    ("Mangler på nettsiden i dag", "Regnes ut automatisk. «Komplett» betyr at beskrivelse og bilder er på plass.", "Vises ikke på nettsiden"),
 ]
 for felt, hva, hvor in forklaringer:
     for kol, v in enumerate([felt, hva, hvor], start=1):

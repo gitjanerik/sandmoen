@@ -11,7 +11,8 @@
   },
   "vilkaar": {
     "engangsbelop": 300000,
-    "festeavgift": 6000
+    "festeavgift": 6000,
+    "kommunaleKostnader": 21500
   },
   "merknad": "Strøm er framført til feltet. Vann og vei er ikke opparbeidet.",
   "heroVideoTekst": "Tomt 14 · F4 grense nord · Høst",
@@ -38,6 +39,8 @@
     "epost": "post@sandmoen.com"
   },
   "lenker": {
-    "reguleringsplan": "https://kommunekart.com/klient/IndreNamdal?urlid=98245ea4-4583-4aa0-9a64-fff3153b4252"
+    "reguleringsplan": "https://kommunekart.com/klient/IndreNamdal?urlid=98245ea4-4583-4aa0-9a64-fff3153b4252",
+    "tomtefesteloven": "https://lovdata.no/dokument/NL/lov/1996-12-20-106",
+    "nasjonalpark": "https://www.norgesnasjonalparker.no/nasjonalparker/blafjella-skjakerfjella/"
   }
 }
