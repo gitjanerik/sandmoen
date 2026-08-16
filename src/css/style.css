@@ -478,6 +478,10 @@ main { flex: 1; }
 .kontakt-layout { display: grid; grid-template-columns: 1fr 360px; gap: 48px; align-items: start;
   padding-top: 48px; padding-bottom: 90px; }
 .form-card { background: #fff; border: 1px solid var(--hairline); border-radius: 16px; padding: 32px; }
+/* Turnstile-widgeten er en iframe med låst bredde på 300px. Uten min-width:0
+   presser den hele grid-kolonna bredere enn skjermen på mobil. */
+.kontakt-layout > *, .detalj-layout > * { min-width: 0; }
+.cf-turnstile { margin-bottom: 14px; }
 .form label { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
 .form label > span { font: 600 13.5px var(--font-ui); color: var(--ink-3); }
 .form input, .form textarea { background: var(--field-bg); font-weight: 400; }
@@ -557,4 +561,14 @@ main { flex: 1; }
 @media (max-width: 560px) {
   .facts, .includes, .form-row { grid-template-columns: 1fr; }
   .stats .wrap { grid-template-columns: 1fr 1fr; }
+  .form-card { padding: 24px 18px; }
+}
+
+/* Widgeten kan ikke bli smalere enn 300px, så på smale skjermer skaleres den
+   ned i stedet. Uten dette stikker den utenfor kortet og sida får sidesprang. */
+@media (max-width: 420px) {
+  .cf-turnstile { transform: scale(.92); transform-origin: 0 0; height: 60px; }
+}
+@media (max-width: 380px) {
+  .cf-turnstile { transform: scale(.82); height: 54px; }
 }
