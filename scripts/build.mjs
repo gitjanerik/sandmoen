@@ -463,7 +463,8 @@ function detalj(t) {
     <p class="plan-info">For mer info om nasjonalparken se <a href="${esc(lenker.nasjonalpark)}" target="_blank" rel="noopener">norgesnasjonalparker.no →</a></p>
 
     <h2>Plassering i feltet</h2>
-    <p class="plan-info">${plasseringTxt}<a href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Se tomta i reguleringsplanen (kommunekart) →</a></p>
+    <p class="plan-info">${plasseringTxt}<a href="${esc(lenker.reguleringsplan)}" target="_blank" rel="noopener">Se tomta i reguleringsplanen (kommunekart) →</a><br>
+      For reguleringsbestemmelser se <a href="${esc(lenker.reguleringsbestemmelser)}" target="_blank" rel="noopener">arealplaner.no →</a></p>
     <div class="felt-kart">
       <div class="img" style="background-image:url('${L.asset('felt4-kart.png')}')"></div>
       <span class="note">Reguleringskart · Lierne kommune</span>
@@ -479,7 +480,7 @@ function detalj(t) {
     <p class="aside-note">${esc(vilkaar.indeksTekst)}</p>
     <div class="aside-row"><span>Areal</span><b class="tabnum">${areaTxt(t.areal)}</b></div>
     <div class="aside-row"><span>Status</span><span class="badge ${b.cls}">${b.t}</span></div>
-    <p class="aside-merknad">${esc(merknad)} For planbeskrivelse kontakt Lierne kommune.</p>
+    <p class="aside-merknad">${esc(merknad)} For planbeskrivelse kontakt Lierne kommune eller se <a href="${esc(lenker.reguleringsbestemmelser)}" target="_blank" rel="noopener">arealplaner.no</a>.</p>
     <a class="btn btn-sand btn-block" href="${L.kontakt}?tomt=${t.nr}">Kontakt oss om tomt ${t.nr}</a>
   </aside>
 </div>
