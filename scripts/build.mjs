@@ -1,5 +1,6 @@
 // Bygger statiske sider til dist/ fra data/ + maler. Ingen runtime-avhengigheter.
 import { readFileSync, rmSync, mkdirSync, writeFileSync, cpSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -37,6 +38,18 @@ const metaLine = (t) => esc(areaTxt(t.areal));
 const fokus = config.fokus || {};
 const bgpos = (file) => fokus[file] || 'center 20%';
 
+/* ---------- Versjonsmerking av CSS/JS ----------
+   Uten dette serverer nettleseren gammel JS mot ny HTML etter en oppdatering,
+   og malen og dataene kommer i utakt. Hashen endrer URL-en når filen endres. */
+const hashet = new Map();
+function ver(relSti) {
+  if (!hashet.has(relSti)) {
+    const h = createHash('sha256').update(readFileSync(join(SRC, relSti))).digest('hex').slice(0, 8);
+    hashet.set(relSti, h);
+  }
+  return '?v=' + hashet.get(relSti);
+}
+
 /* ---------- Relative stier per sidedybde ---------- */
 function links(depth) {
   const r = '../'.repeat(depth);
@@ -45,10 +58,11 @@ function links(depth) {
     home: r || './',
     oversikt: r + 'tomter/',
     kontakt: r + 'kontakt/',
-    css: r + 'css/style.css',
+    css: r + 'css/style.css' + ver('css/style.css'),
+    fonts: r + 'css/fonts.css' + ver('css/fonts.css'),
     tomt: (nr) => r + 'tomt/' + nr + '/',
     asset: (f) => r + 'assets/' + f,
-    js: (f) => r + 'js/' + f,
+    js: (f) => r + 'js/' + f + ver('js/' + f),
   };
 }
 
@@ -113,7 +127,7 @@ function head(title, desc, L, path = '', opts = {}) {
 <meta name="description" content="${esc(desc)}">
 <meta name="theme-color" content="#26412f">
 <link rel="icon" href="${FAVICON}">${seo}
-<link rel="stylesheet" href="${L.root}css/fonts.css">
+<link rel="stylesheet" href="${L.fonts}">
 <link rel="stylesheet" href="${L.css}">
 </head>
 <body>
@@ -583,8 +597,10 @@ function notFound() {
   // Serveres for vilkårlige URL-er, så alle lenker må være rot-absolutte.
   const L = {
     root: '/', home: '/', oversikt: '/tomter/', kontakt: '/kontakt/',
-    css: '/css/style.css', tomt: (nr) => '/tomt/' + nr + '/',
-    asset: (f) => '/assets/' + f, js: (f) => '/js/' + f,
+    css: '/css/style.css' + ver('css/style.css'),
+    fonts: '/css/fonts.css' + ver('css/fonts.css'),
+    tomt: (nr) => '/tomt/' + nr + '/',
+    asset: (f) => '/assets/' + f, js: (f) => '/js/' + f + ver('js/' + f),
   };
   return head('Side ikke funnet — Sandmoen',
     'Siden finnes ikke. Sandmoen har fått nye nettsider — gå til forsiden eller se de ledige hyttetomtene.',
