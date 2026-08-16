@@ -117,7 +117,7 @@ function head(title, desc, L, path = '', opts = {}) {
 <link rel="stylesheet" href="${L.css}">
 </head>
 <body>
-<div class="page">`;
+<div class="page" id="top">`;
 }
 
 function header(L, current) {
@@ -161,6 +161,10 @@ function footer(L) {
   </div>
   <div class="footer-bottom"><div class="wrap">© 2026 Sandmoen gård · Lierne, Trøndelag</div></div>
 </footer>
+<a class="til-topp" href="#top" aria-label="Til toppen av siden">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</a>
+<script src="${L.js('tiltopp.js')}"></script>
 </div>
 </body>
 </html>`;
@@ -188,7 +192,7 @@ function forside() {
       <p>${stortForbokstav(tallord(tomter.length))} ryddede solrike tomter på Lifjellet med strøm til tomtegrensa. Fjelltur, fiske og bål om sommeren, ski og nordlys om vinteren — fire mil fra svenskegrensa, rett ved Blåfjella-Skjækerfjella nasjonalpark.</p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="${L.oversikt}">Se de ledige tomtene →</a>
-        <a class="btn btn-glass btn-lg" href="${L.oversikt}">Slik fester du tomt</a>
+        <a class="btn btn-glass btn-lg" href="${L.oversikt}#feste">Slik fester du tomt</a>
       </div>
     </div>
   </div>
@@ -300,7 +304,7 @@ function oversikt() {
   </div>
 </section>
 
-<section class="section-sand">
+<section class="section-sand" id="feste">
   <div class="wrap feste-blokk">
     <h2>Slik fester du tomt</h2>
     <p>Har du funnet en hyttetomt inngår vi en standardisert festekontrakt. Festekontrakten inngås mellom grunneier ${esc(kontakt.navn)} (bortfester) og du/dere (fester/e) som ønsker å oppføre en fritidsbolig. Festekontrakten tinglyses og tomta får et festenummer i matrikkelen.</p>

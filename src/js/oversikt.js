@@ -66,4 +66,14 @@
     b.addEventListener('click', () => setView(b.dataset.view)));
 
   render();
+
+  // Fra «Slik fester du tomt» på forsiden: rull mykt ned i stedet for å hoppe.
+  // CSS alene klarer ikke dette — et ankerhopp mellom to sider skjer under lasting.
+  if (location.hash === '#feste') {
+    const mal = $('feste');
+    if (mal) {
+      scrollTo({ top: 0, behavior: 'instant' });
+      requestAnimationFrame(() => requestAnimationFrame(() => mal.scrollIntoView()));
+    }
+  }
 })();
