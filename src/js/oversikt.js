@@ -30,6 +30,8 @@
       <td class="tomt">Tomt ${t.nr}</td>
       <td class="tabnum">${t.arealTxt}</td>
       <td class="num price tabnum">${t.engangsTxt}</td>
+      <td class="num tabnum">${t.gebyrTxt}</td>
+      <td class="num tabnum">${t.tinglysingTxt}</td>
       <td class="num tabnum">${t.festeTxt}</td>
       <td><span class="badge ${t.badgeCls}">${t.badgeT}</span></td>
       <td class="go"><a href="${t.href}">Se tomt →</a></td>
@@ -66,4 +68,14 @@
     b.addEventListener('click', () => setView(b.dataset.view)));
 
   render();
+
+  // Fra «Slik fester du tomt» på forsiden: rull mykt ned i stedet for å hoppe.
+  // CSS alene klarer ikke dette — et ankerhopp mellom to sider skjer under lasting.
+  if (location.hash === '#feste') {
+    const mal = $('feste');
+    if (mal) {
+      scrollTo({ top: 0, behavior: 'instant' });
+      requestAnimationFrame(() => requestAnimationFrame(() => mal.scrollIntoView()));
+    }
+  }
 })();
