@@ -29,6 +29,9 @@ src/
 scripts/
   build.mjs       # genererer dist/ fra data + maler
   serve.mjs       # lokal forhåndsvisning
+  lag-tomteark.py # genererer gjennomgangsarket til Frode fra data/
+docs/
+  tomtedetaljer-sandmoen.xlsx  # alle detaljer per tomt, til gjennomgang
 dist/             # byggeutdata (gitignored, deployes)
 ```
 
@@ -55,6 +58,18 @@ dist/             # byggeutdata (gitignored, deployes)
 
   Rekkefølgen i `bilder`-lista bestemmer visningen: første bilde er hovedbildet på
   detaljsiden og på kortet i oversikten.
+
+- **Gjennomgang med Frode**: `docs/tomtedetaljer-sandmoen.xlsx` samler alle detaljer per tomt
+  i ett regneark — tomtefakta, bilder/video og felles vilkår — med gule celler der innholdet
+  mangler på nettsiden i dag. Sendes til Frode for utfylling; svarene legges tilbake i
+  `data/tomter.json` og `data/config.json`. Arket er generert, ikke håndredigert:
+
+  ```bash
+  pip install openpyxl        # engangs
+  python3 scripts/lag-tomteark.py
+  ```
+
+  Kjør skriptet på nytt etter at endringene er lagt inn, så arket alltid speiler dataene.
 
 - **Hero-video**: `src/assets/hero-loop.mp4` er en stum bakgrunns-loop i jevn
   0,15× slow-motion (ffmpeg `minterpolate`, bevegelseskompensert, ekte 30 fps),
