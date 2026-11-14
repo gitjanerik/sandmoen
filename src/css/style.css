@@ -337,7 +337,7 @@ main { flex: 1; }
 .field { display: flex; flex-direction: column; gap: 5px; }
 .field label { font-size: 11.5px; font-weight: 600; letter-spacing: .05em;
   text-transform: uppercase; color: var(--muted-2); }
-.field select, .form input, .form textarea {
+.field select, .form input, .form textarea, .form select {
   font: 500 14.5px var(--font-ui); color: var(--ink);
   border: 1px solid var(--field-border); border-radius: 8px;
   padding: 9px 12px; background: var(--field-bg);
@@ -486,7 +486,9 @@ main { flex: 1; }
 .cf-turnstile { margin-bottom: 14px; }
 .form label { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
 .form label > span { font: 600 13.5px var(--font-ui); color: var(--ink-3); }
-.form input, .form textarea { background: var(--field-bg); font-weight: 400; }
+.form input, .form textarea, .form select { background: var(--field-bg); font-weight: 400; }
+.form select { cursor: pointer; }
+.form label > span small { font-weight: 400; color: var(--muted); }
 .form textarea { resize: vertical; min-height: 108px; field-sizing: content; max-height: 340px; }
 .char-count { margin: -12px 0 6px; text-align: right; font: 500 12.5px var(--font-ui); color: var(--muted); }
 .char-count.over { color: #B0392F; }
