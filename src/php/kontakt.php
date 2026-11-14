@@ -131,6 +131,10 @@ $epost   = $en_linje($_POST['epost'] ?? '');
 $tlf     = $en_linje($_POST['tlf'] ?? '');
 $tomt    = $en_linje($_POST['tomt'] ?? '');
 $melding = trim((string) ($_POST['melding'] ?? ''));
+$kilde   = $en_linje($_POST['kilde'] ?? '');
+$kilder  = ['FINN.no', 'Google-søk', 'Annonse på nett', 'Facebook / Instagram',
+            'Venner eller familie', 'Har vært i området', 'Annet'];
+if (!in_array($kilde, $kilder, true)) $kilde = '';
 
 if ($navn === '' || !filter_var($epost, FILTER_VALIDATE_EMAIL)) {
   svar(false, 'Fyll ut navn og en gyldig e-postadresse, så prøver du igjen.', 422);
@@ -156,7 +160,8 @@ $kropp = "Ny henvendelse fra sandmoen.com\n\n"
        . "Navn:     $navn\n"
        . "Telefon:  $tlf\n"
        . "E-post:   $epost\n"
-       . "Tomt:     $tomt\n\n"
+       . "Tomt:     $tomt\n"
+       . "Kilde:    " . ($kilde !== '' ? $kilde : '–') . "\n\n"
        . "Melding:\n$melding\n";
 
 $headers = [

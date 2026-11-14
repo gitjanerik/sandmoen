@@ -527,6 +527,17 @@ function kontaktside() {
       </div>
       <label><span>E-post</span><input name="epost" type="email" required placeholder="din@epost.no"></label>
       <label><span>Tomt du er interessert i</span><input name="tomt" id="felt-tomt" placeholder="F.eks. Tomt 7 — eller la stå åpent"></label>
+      <label><span>Hvor hørte du om oss? <small>(valgfritt)</small></span>
+        <select name="kilde">
+          <option value="">Velg …</option>
+          <option>FINN.no</option>
+          <option>Google-søk</option>
+          <option>Annonse på nett</option>
+          <option>Facebook / Instagram</option>
+          <option>Venner eller familie</option>
+          <option>Har vært i området</option>
+          <option>Annet</option>
+        </select></label>
       <label><span>Melding</span><textarea name="melding" rows="4" maxlength="1000" placeholder="Skriv gjerne litt om hva du lurer på"></textarea></label>
       <p class="char-count" id="char-count" aria-live="polite">0 / 1000</p>
       <p class="skjema-hint">Tips: unngå å lime inn nettlenker – meldinger med lenker blir stoppet automatisk.</p>
